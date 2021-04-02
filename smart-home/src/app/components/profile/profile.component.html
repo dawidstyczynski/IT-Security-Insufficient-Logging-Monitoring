@@ -1,0 +1,21 @@
+<app-menu></app-menu>
+
+<div class="center-screen">
+      <section class="center">
+            <p>This is the Profile of:</p>
+            <p class="userName">{{GetUserName()}}</p>
+      </section>
+      <section class="coronaV">
+            <input pInputText type="email" [(ngModel)]="email"  pTooltip="Enter a new email" tooltipPosition="top" tooltipEvent="focus">
+            <button pButton type="button" label="Change email" (click)="ChangeEmail()"></button>
+      </section>
+      <section class="coronaV">
+            <input type="text" [(ngModel)]="newPW" pInputText pTooltip="Enter a new password" tooltipPosition="top" tooltipEvent="focus">
+            <button pButton type="button" label="Change password" (click)="ChangePassword()"></button>
+      </section>
+      
+      
+      
+      
+</div>
+

@@ -1,11 +1,28 @@
 {
-  "name": "smart-home-backend",
+  "name": "back-end",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/main.js",
+  "description": "backend for weblink library",
+  "main": "./dist/back-end/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "tsc && nodemon ./dist/back-end/index.js"
   },
-  "author": "Christian Gießrigl, Oliver Dragschitz",
-  "license": "ISC"
+  "author": "Christian Giessrigl",
+  "license": "ISC",
+  "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/express-fileupload": "^1.1.6",
+    "@types/node": "^14.14.37",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "nodemon": "^2.0.7",
+    "rethinkdb": "^2.4.2",
+    "rethinkdb-ts": "^2.4.9",
+    "tsc": "^1.20150623.0"
+  },
+  "devDependencies": {}
 }
