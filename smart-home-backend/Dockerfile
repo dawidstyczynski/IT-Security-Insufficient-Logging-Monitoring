@@ -1,12 +1,14 @@
 FROM node:14
 
-WORKDIR /usr/src/app
+WORKDIR /usr/backend/
 
-COPY package*.json ./
+COPY dist ./
+COPY package.json ./
+
+WORKDIR /usr/backend/
 
 RUN npm install
 
-COPY ./dist/smart-home-backend .
+EXPOSE 3000
 
-EXPOSE 8080
-CMD [ "node", "index.js" ]
+CMD ["node", "index.js"]

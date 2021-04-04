@@ -1,0 +1,11 @@
+{
+    "host": "localhost",
+    "port": 28015,
+    "databaseName": "smart-home",
+    "tables": [
+        {
+            "name": "user",
+            "primaryKey": "username"
+        }
+    ]
+}
