@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+    smart-home-backend:
+        build: ./smart-home-backend
+        image: smart-home-backend
+        container_name: mart-home-backend
+        networks:
+            - example
+        ports:
+            - 3000:3000
+
+    smart-home-db:
+        build: ./smart-home-db
+        image: smart-home-db
+        container_name: mart-home-db
+        networks:
+            - example
+        ports:
+            - 28015:28015
+            - 29015:29015
+            - 8080:8080
+
+
+networks:
+    example:
+        external: true
