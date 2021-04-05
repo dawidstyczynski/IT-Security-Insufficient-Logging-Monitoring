@@ -2,18 +2,23 @@ import * as serverConfig from './config/server-config.json';
 import express, { Router } from 'express';
 import { loginController } from './api/login/login.controller';
 import { registrationController } from './api/registration/registration.controller';
-import { initializeDB } from './services/database.service';
+import { DatabaseService } from './services/database.service';
 
-initializeDB();
 const server = express();
-
 server.use('/login', loginController);
 server.use('/registration', registrationController);
 
-
-server.listen(serverConfig.port, function(){
-      console.log("Server is running at https://localhost:${serverConfig.port}");
+const databaseService = new DatabaseService();
+databaseService.initialize().then(() => {
+      server.listen(serverConfig.port, function(){
+            console.log("Server is running at https://localhost:${serverConfig.port}");
+      });
+})
+.catch((error) => {
+      console.log("Database could not be initialized.");
 });
+
+
 
 /*
 app.patch('/changePW/:id', function(req, res){

@@ -1,5 +1,5 @@
 {
-    "host": "localhost",
+    "host": "smart-home-db",
     "port": 28015,
     "databaseName": "smart-home",
     "tables": [

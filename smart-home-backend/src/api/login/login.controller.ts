@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { UserTableService, initializeDB } from '../../services/database.service';
+import { UserTableService } from '../../services/database.service';
 
 const router = Router();
 

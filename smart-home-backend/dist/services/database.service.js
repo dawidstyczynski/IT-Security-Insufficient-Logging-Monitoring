@@ -28,40 +28,62 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserTableService = exports.initializeDB = void 0;
+exports.UserTableService = exports.DatabaseService = void 0;
 const rethinkdb_ts_1 = require("rethinkdb-ts");
 const databaseConfig = __importStar(require("../config/database-config.json"));
-function initializeDB() {
-    connect()
-        .then((conn) => {
-        console.log('Connected to DB.');
-        createDB(conn);
-        createTable(conn);
-    })
-        .catch((error) => {
-        console.log('Could not connect to DB. Error :' + error);
-    });
+class DatabaseService {
+    constructor() { }
+    /// returns: A promise that returns true if initialization was successful.
+    initialize() {
+        return new Promise((resolve, reject) => {
+            this.connect().then((connection) => {
+                rethinkdb_ts_1.r.dbList()
+                    .contains(databaseConfig.databaseName)
+                    .do((containsDb) => {
+                    return rethinkdb_ts_1.r.branch(containsDb, { created: 0 }, rethinkdb_ts_1.r.dbCreate(databaseConfig.databaseName));
+                }).run(connection).then(() => {
+                    console.log("database initialized");
+                    this.createTables(connection);
+                });
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+    }
+    connect() {
+        return new Promise((resolve, reject) => {
+            rethinkdb_ts_1.r.connect({
+                host: databaseConfig.host,
+                port: databaseConfig.port
+            })
+                .then((connection) => {
+                resolve(connection);
+                console.log("connected");
+            })
+                .catch((error) => {
+                console.log("connection refused.");
+                reject();
+            });
+        });
+    }
+    createTables(connection) {
+        databaseConfig.tables.forEach((table) => {
+            this.createTable(connection, table.name, table.primaryKey);
+        });
+    }
+    createTable(connection, tableName, primaryKey) {
+        rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+            .tableList()
+            .contains(tableName)
+            .do((containsTable) => {
+            return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                .tableCreate(tableName, { primaryKey: primaryKey }));
+        })
+            .run(connection);
+        console.log("table created");
+    }
 }
-exports.initializeDB = initializeDB;
-function createDB(conn) {
-    rethinkdb_ts_1.r.dbList().contains('itsecurity').do((containsDB) => {
-        return rethinkdb_ts_1.r.branch(containsDB, { created: 0 }, rethinkdb_ts_1.r.dbCreate('itsecurity'));
-    }).run(conn);
-}
-function createTable(conn) {
-    rethinkdb_ts_1.r.db('itsecurity').tableList().contains("library").do((containsTable) => {
-        return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db('itsecurity').tableCreate('library'));
-    }).run(conn);
-    rethinkdb_ts_1.r.db('itsecurity').tableList().contains("users").do((containsTable) => {
-        return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db('itsecurity').tableCreate('users', { primaryKey: 'name' }));
-    }).run(conn);
-}
-function connect() {
-    return rethinkdb_ts_1.r.connect({
-        host: databaseConfig.host,
-        port: databaseConfig.port
-    });
-}
+exports.DatabaseService = DatabaseService;
 class UserTableService {
     constructor() {
     }

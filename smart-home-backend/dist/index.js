@@ -27,12 +27,17 @@ const express_1 = __importDefault(require("express"));
 const login_controller_1 = require("./api/login/login.controller");
 const registration_controller_1 = require("./api/registration/registration.controller");
 const database_service_1 = require("./services/database.service");
-database_service_1.initializeDB();
 const server = express_1.default();
 server.use('/login', login_controller_1.loginController);
 server.use('/registration', registration_controller_1.registrationController);
-server.listen(serverConfig.port, function () {
-    console.log("Server is running at https://localhost:${serverConfig.port}");
+const databaseService = new database_service_1.DatabaseService();
+databaseService.initialize().then(() => {
+    server.listen(serverConfig.port, function () {
+        console.log("Server is running at https://localhost:${serverConfig.port}");
+    });
+})
+    .catch((error) => {
+    console.log("Database could not be initialized.");
 });
 /*
 app.patch('/changePW/:id', function(req, res){
