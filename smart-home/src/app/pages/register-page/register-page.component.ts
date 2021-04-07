@@ -26,8 +26,7 @@ export class RegisterPageComponent implements OnInit {
   public HandleUserRegister()
   {
     this.signUpDisabled = true;
-    this.password = hash(this.password);
-    this.registerService.Register({name: this.userName, password: this.password, email: ''} )
+    this.registerService.Register({name: this.userName, password: hash(this.password), email: ''} )
     .then((user) =>{
       console.log('User is now registered.');
       this.router.navigateByUrl(this.router.createUrlTree(['login']));

@@ -1,17 +1,25 @@
 import * as serverConfig from './config/server-config.json';
-import express, { Router } from 'express';
+import express from "express";
 import { loginController } from './api/login/login.controller';
 import { registrationController } from './api/registration/registration.controller';
 import { DatabaseService } from './services/database.service';
+import cors from 'cors';
 
 const server = express();
+
+server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
+server.use(cors());
+
 server.use('/login', loginController);
-server.use('/registration', registrationController);
+server.use('/register', registrationController);
 
 const databaseService = new DatabaseService();
 databaseService.initialize().then(() => {
+      console.log("Database initialized.")
+
       server.listen(serverConfig.port, function(){
-            console.log("Server is running at https://localhost:${serverConfig.port}");
+            console.log("Server is running at https://localhost:" + serverConfig.port);
       });
 })
 .catch((error) => {

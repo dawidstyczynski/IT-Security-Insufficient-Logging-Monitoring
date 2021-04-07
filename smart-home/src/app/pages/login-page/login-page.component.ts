@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { UserLoginService } from 'src/app/services/user-login.service';
 import * as hash from 'object-hash';
 import { Router } from '@angular/router';
+import { RouteName } from 'src/app/constants/route-name.enum';
 
 @Component({
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
-
 
   public userName: string;
   public password: string;
@@ -40,7 +40,7 @@ export class LoginPageComponent implements OnInit {
       
     await this.loginService.Login( {name: this.userName, password: hash(this.password), email: ''} )
     .then((user) =>{
-      this.router.navigateByUrl(this.router.createUrlTree(['devices']));
+      this.router.navigateByUrl(this.router.createUrlTree([RouteName.Devices]));
     })
     .catch((error) =>{
       console.log(error);

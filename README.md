@@ -5,6 +5,7 @@ This repository contains a demo application with bad and insufficient logging & 
 ## Start backend and database
 
 ```sh
+docker network create smart-home
 docker-compose up -d
 ```
 

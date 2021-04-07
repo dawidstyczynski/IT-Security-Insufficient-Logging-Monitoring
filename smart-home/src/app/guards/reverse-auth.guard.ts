@@ -19,6 +19,6 @@ export class ReverseAuthGuard implements CanActivate {
         return true;
       }
       
-      return this.router.createUrlTree(['lib']);
+      return this.router.createUrlTree(['/devices']);
   }
 }

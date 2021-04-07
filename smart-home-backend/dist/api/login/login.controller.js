@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginController = void 0;
 const express_1 = require("express");
-const database_service_1 = require("../../services/database.service");
+const usertable_service_1 = require("../../services/usertable.service");
 const router = express_1.Router();
-const userTable = new database_service_1.UserTableService();
-router.get('/', (req, res) => {
+const userTable = new usertable_service_1.UserTableService();
+router.post('/', (req, res) => {
     console.log('Request to log in.');
     console.info(req.body);
     userTable.LoginUser(req.body)

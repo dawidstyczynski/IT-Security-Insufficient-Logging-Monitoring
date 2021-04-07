@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MenuItem, MessageService} from 'primeng/api';
+import { RouteName } from 'src/app/constants/route-name.enum';
 import {UserLoginService} from '../../services/user-login.service';
 
 @Component({
@@ -17,14 +18,14 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [
-          {label: 'Device overview', icon: 'pi pi-wifi', routerLink: ['/devices']},
-          {label: 'Configuration', icon: 'pi pi-cog', routerLink: ['/config']},
-          {label: 'History', icon: 'pi pi-book', routerLink: ['/logs']}
+          {label: 'Device overview', icon: 'pi pi-wifi', routerLink: [RouteName.Devices]},
+          {label: 'Configuration', icon: 'pi pi-cog', routerLink: [RouteName.Config]},
+          {label: 'History', icon: 'pi pi-book', routerLink: [RouteName.Logs]}
     ]
   }
 
   public HandleUserLogout(){
     this.loginService.Logout();
-    this.router.navigateByUrl(this.router.createUrlTree(['login']));
+    this.router.navigateByUrl(this.router.createUrlTree([RouteName.Login]));
   }
 }

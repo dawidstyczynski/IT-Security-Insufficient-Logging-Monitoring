@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UserLoginService } from 'src/app/services/user-login.service';
 import { Router } from '@angular/router';
+import { RouteName } from 'src/app/constants/route-name.enum';
 
 @Component({
-  selector: 'app-not-found',
-  templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss']
+  templateUrl: './not-found-page.component.html',
+  styleUrls: ['./not-found-page.component.scss']
 })
-export class NotFoundComponent implements OnInit {
+export class NotFoundPageComponent implements OnInit {
 
   constructor(private loginService : UserLoginService, private router: Router) { }
 
@@ -17,11 +17,11 @@ export class NotFoundComponent implements OnInit {
   public GoHome() : void{
     if(this.loginService.getUserData() === null)
     {
-      this.router.navigateByUrl(this.router.createUrlTree(['login']));
+      this.router.navigateByUrl(this.router.createUrlTree([RouteName.Login]));
     }
     else
     {
-      this.router.navigateByUrl(this.router.createUrlTree(['lib']));
+      this.router.navigateByUrl(this.router.createUrlTree([RouteName.Devices]));
     }
   }
 }

@@ -27,13 +27,18 @@ const express_1 = __importDefault(require("express"));
 const login_controller_1 = require("./api/login/login.controller");
 const registration_controller_1 = require("./api/registration/registration.controller");
 const database_service_1 = require("./services/database.service");
+const cors_1 = __importDefault(require("cors"));
 const server = express_1.default();
+server.use(express_1.default.urlencoded({ extended: false }));
+server.use(express_1.default.json());
+server.use(cors_1.default());
 server.use('/login', login_controller_1.loginController);
-server.use('/registration', registration_controller_1.registrationController);
+server.use('/register', registration_controller_1.registrationController);
 const databaseService = new database_service_1.DatabaseService();
 databaseService.initialize().then(() => {
+    console.log("Database initialized.");
     server.listen(serverConfig.port, function () {
-        console.log("Server is running at https://localhost:${serverConfig.port}");
+        console.log("Server is running at https://localhost:" + serverConfig.port);
     });
 })
     .catch((error) => {

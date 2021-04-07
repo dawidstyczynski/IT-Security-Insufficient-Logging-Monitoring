@@ -18,17 +18,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserTableService = exports.DatabaseService = void 0;
+exports.DatabaseService = void 0;
 const rethinkdb_ts_1 = require("rethinkdb-ts");
 const databaseConfig = __importStar(require("../config/database-config.json"));
 class DatabaseService {
@@ -44,6 +35,9 @@ class DatabaseService {
                 }).run(connection).then(() => {
                     console.log("database initialized");
                     this.createTables(connection);
+                    resolve(true);
+                }).catch((error) => {
+                    console.log("error!!!");
                 });
             }).catch((error) => {
                 reject(error);
@@ -67,89 +61,37 @@ class DatabaseService {
         });
     }
     createTables(connection) {
-        databaseConfig.tables.forEach((table) => {
-            this.createTable(connection, table.name, table.primaryKey);
-        });
+        return new Promise(((resolve) => {
+            const tablePromises = new Array();
+            databaseConfig.tables.forEach((table) => {
+                tablePromises.push(this.createTable(connection, table));
+            });
+            Promise.all(tablePromises).then(() => {
+                resolve(true);
+            }).catch((error) => {
+                console.log('Error while creating table', error);
+                resolve(false);
+            });
+        }));
     }
-    createTable(connection, tableName, primaryKey) {
-        rethinkdb_ts_1.r.db(databaseConfig.databaseName)
-            .tableList()
-            .contains(tableName)
-            .do((containsTable) => {
-            return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db(databaseConfig.databaseName)
-                .tableCreate(tableName, { primaryKey: primaryKey }));
-        })
-            .run(connection);
-        console.log("table created");
+    createTable(connection, table) {
+        return new Promise(((resolve) => {
+            rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                .tableList()
+                .contains(table.name)
+                .do((containsTable) => {
+                return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .tableCreate(table.name, { primaryKey: table.primaryKey }));
+            })
+                .run(connection)
+                .then(() => {
+                console.log(`Table ${table.name} created successfully`);
+                resolve(true);
+            }).catch((error) => {
+                console.log(`Error while creating ${table.name} - ${table.name} already exists`, error);
+                resolve(false);
+            });
+        }));
     }
 }
 exports.DatabaseService = DatabaseService;
-class UserTableService {
-    constructor() {
-    }
-    RegisterUser(entry) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: entry.name }).run(conn);
-            if (exists.length === 0) {
-                let result = yield rethinkdb_ts_1.r.db('itsecurity').table('users').insert({
-                    name: entry.name,
-                    password: entry.password,
-                }).run(conn);
-                if (result.inserted === 0) {
-                    throw new Error('Can not create user.');
-                }
-                let user = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: entry.name }).run(conn);
-                console.log('User registered.');
-                return user[0];
-            }
-            throw new Error('Username already exists.');
-        });
-    }
-    LoginUser(entry) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: entry.name, password: entry.password }).run(conn);
-            if (exists.length === 0) {
-                throw new Error('User not found.');
-            }
-            console.log('User exists.');
-            return exists[0];
-        });
-    }
-    ChangePW(id, entry) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: id, password: entry.oldPW }).run(conn);
-            if (exists.length === 0) {
-                throw new Error('');
-            }
-            let update = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: id, password: entry.oldPW }).update({ password: entry.newPW }).run(conn);
-            let foundUsers = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: id }).run(conn);
-            return foundUsers[0];
-        });
-    }
-    ChangeEmail(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: user.name, password: user.password }).run(conn);
-            if (exists.length === 0) {
-                throw new Error('');
-            }
-            let update = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: user.name }).update({
-                name: user.name,
-                password: user.password,
-                email: user.email
-            }).run(conn);
-            let foundUsers = yield rethinkdb_ts_1.r.db('itsecurity').table('users').filter({ name: user.name }).run(conn);
-            return foundUsers[0];
-        });
-    }
-    connect() {
-        return rethinkdb_ts_1.r.connect({
-            host: databaseConfig.host,
-            port: databaseConfig.port
-        });
-    }
-}
-exports.UserTableService = UserTableService;
