@@ -5,11 +5,10 @@ import * as hash from 'object-hash';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  templateUrl: './register-page.component.html',
+  styleUrls: ['./register-page.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterPageComponent implements OnInit {
 
   public userName: string;
   public password: string;

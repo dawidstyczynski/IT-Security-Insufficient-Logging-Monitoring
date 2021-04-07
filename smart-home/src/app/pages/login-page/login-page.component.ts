@@ -4,11 +4,11 @@ import * as hash from 'object-hash';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
+
 
   public userName: string;
   public password: string;
@@ -50,3 +50,4 @@ export class LoginComponent implements OnInit {
     });
   }
 }
+

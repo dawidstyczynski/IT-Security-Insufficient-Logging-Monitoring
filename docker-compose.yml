@@ -6,7 +6,7 @@ services:
         image: smart-home-backend
         container_name: mart-home-backend
         networks:
-            - example
+            - smart-home
         ports:
             - 3000:3000
 
@@ -15,7 +15,7 @@ services:
         image: smart-home-db
         container_name: mart-home-db
         networks:
-            - example
+            - smart-home
         ports:
             - 28015:28015
             - 29015:29015
@@ -23,5 +23,5 @@ services:
 
 
 networks:
-    example:
+    smart-home:
         external: true

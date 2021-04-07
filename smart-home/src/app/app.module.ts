@@ -6,14 +6,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigurationComponent } from './components/configuration/configuration.component';
 import { HistoryComponent } from './components/history/history.component';
 import { DevicesComponent } from './components/devices/devices.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -37,13 +37,15 @@ import { FilterService } from 'primeng/api';
   declarations: [
     AppComponent,
     MenuComponent,
-    LoginComponent,
-    RegisterComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
     NotFoundComponent,
     ProfileComponent,
     ConfigurationComponent,
     HistoryComponent,
     DevicesComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
   ],
   imports: [
     BrowserModule,

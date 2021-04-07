@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserRecord } from '../../../../smart-home-common/UserRecord';
-import { host, port } from '../miscellaneous/hostoptions';
-import { ChangePWRecord } from '../../../../smart-home-common/ChangePWRecord';
+import { host, port } from '../constants/hostoptions';
 
 @Injectable({
   providedIn: 'root'
@@ -62,4 +60,16 @@ export class UserLoginService {
   public getUserData(){
     return this.userData;
   }
+}
+
+interface ChangePWRecord{
+  oldPW: string,
+  newPW: string,
+}
+
+interface UserRecord{
+  name: string,
+  password: string,
+
+  email: string,
 }
