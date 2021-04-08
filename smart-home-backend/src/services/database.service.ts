@@ -16,9 +16,7 @@ export class DatabaseService {
                               console.log("database initialized");
                               this.createTables(connection);
                               resolve(true);
-                        }).catch((error) => {
-                              console.log("error!!!")
-                        });
+                        })
                   }).catch((error) => {
                         reject(error);
                   });
@@ -42,42 +40,23 @@ export class DatabaseService {
             });
       }
 
-      private createTables(connection: Connection): Promise<boolean> {
-            return new Promise<boolean>(((resolve) => {
-                const tablePromises = new Array<Promise<boolean>>();
-                databaseConfig.tables.forEach((table) => {
-                    tablePromises.push(this.createTable(connection, table));
-                });
-                Promise.all(tablePromises).then(() => {
-                    resolve(true);
-                }).catch((error) => {
-                  console.log('Error while creating table', error);
-                    resolve(false);
-                });
-            }));
-        }
-    
-        private createTable(connection: Connection, table: any): Promise<boolean> {
-            return new Promise<boolean>(((resolve) => {
-                r.db(databaseConfig.databaseName)
-                    .tableList()
-                    .contains(table.name)
-                    .do((containsTable: RDatum<boolean>) => {
-                        return r.branch(containsTable,
-                            { created: 0 },
-                            r.db(databaseConfig.databaseName)
-                                .tableCreate(table.name, { primaryKey: table.primaryKey }));
-                    })
-                    .run(connection)
-                    .then(() => {
-                        console.log(`Table ${table.name} created successfully`);
-                        resolve(true);
-                    }).catch((error) => {
-                        console.log(`Error while creating ${table.name} - ${table.name} already exists`, error);
-                    resolve(false);
-                });
-            }));
-        }
+      private createTables(connection: Connection) {
+            databaseConfig.tables.forEach((table) => {
+                  this.createTable(connection, table.name, table.primaryKey)
+            });
+      }
+
+      private createTable(connection: Connection, tableName: string, primaryKey: string) {
+            r.db(databaseConfig.databaseName)
+            .tableList()
+            .contains(tableName)
+            .do((containsTable: any) => {
+                  return r.branch(containsTable, {created: 0}, r.db(databaseConfig.databaseName)
+                  .tableCreate(tableName, { primaryKey: primaryKey }));
+            })
+            .run(connection);
+            console.log("table created");
+      }
 }
 
 

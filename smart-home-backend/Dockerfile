@@ -2,13 +2,10 @@ FROM node:14
 
 WORKDIR /usr/backend/
 
-COPY dist ./
-COPY package.json ./
-
-WORKDIR /usr/backend/
+COPY package*.json ./
 
 RUN npm install
 
-EXPOSE 3000
+COPY . .
 
-CMD ["node", "index.js"]
+EXPOSE 3000
