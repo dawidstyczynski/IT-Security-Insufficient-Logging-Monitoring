@@ -4,6 +4,8 @@ import { loginController } from './api/login/login.controller';
 import { registrationController } from './api/registration/registration.controller';
 import { DatabaseService } from './services/database.service';
 import cors from 'cors';
+import { LogModel } from './api/log/log.model';
+import { DatabaseTable } from './config/database-table.enum';
 
 const server = express();
 

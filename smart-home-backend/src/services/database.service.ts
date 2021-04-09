@@ -1,10 +1,14 @@
 import { Connection, r, RDatum } from 'rethinkdb-ts';
 import * as databaseConfig from '../config/database-config.json';
+import { DatabaseTable } from '../config/database-table.enum';
 
 export class DatabaseService {
       constructor() {}
 
-      /// returns: A promise that returns true if initialization was successful.
+      /**
+       * Initializes the database.
+       * @returns A promise that returns true if initialization was successful.
+       */
       public initialize(): Promise<boolean> {
             return new Promise<boolean>((resolve, reject) => {
                   this.connect().then((connection: Connection) => {
@@ -14,7 +18,7 @@ export class DatabaseService {
                               return r.branch(containsDb, { created: 0 }, r.dbCreate(databaseConfig.databaseName));
                         }).run(connection).then(() => {
                               console.log("database initialized");
-                              this.createTables(connection);
+                              this.initializeTables(connection);
                               resolve(true);
                         })
                   }).catch((error) => {
@@ -23,6 +27,10 @@ export class DatabaseService {
             });
       }
 
+      /**
+       * Connects to the database.
+       * @returns A Promise with the connection.
+       */
       public connect(): Promise<Connection> {
             return new Promise<Connection>((resolve, reject) => {
                   r.connect({
@@ -40,22 +48,79 @@ export class DatabaseService {
             });
       }
 
-      private createTables(connection: Connection) {
-            databaseConfig.tables.forEach((table) => {
-                  this.createTable(connection, table.name, table.primaryKey)
+      /**
+       * Inserts a row into the database.
+       * @param entity The entity to create.
+       * @param table The table in wich the entity should be created.
+       * @returns A Promise that returns true if the entry was succesfully created.
+       */
+      public insert<T>(entity: T, table: DatabaseTable): Promise<Boolean> {
+            return new Promise<Boolean>((resolve, reject) => {
+                  this.connect()
+                  .then((connection: Connection) => {
+                        r.db(databaseConfig.databaseName)
+                        .table(table)
+                        .insert(entity)
+                        .run(connection)
+                        .then(() => {
+                              console.log(table + " entity created");
+                              resolve(true);
+                        })
+                        .catch((error) => {
+                              console.log(error);
+                              reject(false);
+                        });
+                  })
+                  .catch((error) => {
+                        console.log('Database connection failed')
+                        reject(false);
+                  });
             });
       }
 
-      private createTable(connection: Connection, tableName: string, primaryKey: string) {
-            r.db(databaseConfig.databaseName)
-            .tableList()
-            .contains(tableName)
-            .do((containsTable: any) => {
-                  return r.branch(containsTable, {created: 0}, r.db(databaseConfig.databaseName)
-                  .tableCreate(tableName, { primaryKey: primaryKey }));
-            })
-            .run(connection);
-            console.log("table created");
+      /**
+       * Returns all entries of a database table.
+       * @param table The database table.
+       * @returns A Promise with all entries of a database table.
+       */
+      public getAllEntries<T>(table: DatabaseTable): Promise<T[]> {
+            return new Promise<T[]>((resolve, reject) => {
+                  this.connect()
+                  .then((connection: Connection) => {
+                        r.db(databaseConfig.databaseName)
+                        .table(table)
+                        .filter({})
+                        .run(connection)
+                        .then((entries: T[]) => {
+                              resolve(entries);
+                        })
+                        .catch((error) => {
+                              reject(error);
+                        });
+                  })
+                  .catch((error) => {
+                        console.log('Database connection failed')
+                        reject(false);
+                  });
+            });
+      }
+
+      /**
+       * Initializes all tables in the database.
+       * @param connection The connection to the database.
+       */
+      private initializeTables(connection: Connection) {
+            databaseConfig.tables.forEach((table) => {
+                  r.db(databaseConfig.databaseName)
+                  .tableList()
+                  .contains(table.name)
+                  .do((containsTable: any) => {
+                        return r.branch(containsTable, {created: 0}, r.db(databaseConfig.databaseName)
+                        .tableCreate(table.name, { primaryKey: table.primaryKey }));
+                  })
+                  .run(connection);
+                  console.log("table created");
+            });
       }
 }
 
