@@ -1,4 +1,5 @@
 export enum DatabaseTable {
     User = 'User',
-    Log = 'Log'
+    Log = 'Log',
+    Devices = 'IoTDevices'
 }

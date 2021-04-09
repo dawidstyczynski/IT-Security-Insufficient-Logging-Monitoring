@@ -6,6 +6,8 @@ import { DatabaseService } from './services/database.service';
 import cors from 'cors';
 import { LogModel } from './api/log/log.model';
 import { DatabaseTable } from './config/database-table.enum';
+import { devicesController } from './api/devices/devices.controller';
+import { IoTDecice } from './api/devices/iot-devices.model';
 
 const server = express();
 
@@ -16,10 +18,16 @@ server.use(cors());
 server.use('/login', loginController);
 server.use('/register', registrationController);
 
+server.use('/devices', devicesController);
+
 const databaseService = new DatabaseService();
 databaseService.initialize().then(() => {
       console.log("Database initialized.")
 
+      const device = new IoTDecice("xx", "s", 2, 3, 4);
+
+      databaseService.insert(device, DatabaseTable.Devices);
+      
       server.listen(serverConfig.port, function(){
             console.log("Server is running at https://localhost:" + serverConfig.port);
       });
