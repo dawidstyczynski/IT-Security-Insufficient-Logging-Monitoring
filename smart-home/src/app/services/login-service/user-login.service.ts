@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { host, port } from '../../constants/hostoptions';
-import {UserRecord}  from '../../../../../models/userRecord';
+import { host, port } from '../constants/backend-config';
 
 @Injectable({
   providedIn: 'root'
