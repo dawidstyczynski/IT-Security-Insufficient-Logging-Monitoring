@@ -1,0 +1,19 @@
+{
+    "host": "smart-home-db",
+    "port": 28015,
+    "databaseName": "smart-home",
+    "tables": [
+        {
+            "name": "user",
+            "primaryKey": "username"
+        },
+        {
+            "name": "logs",
+            "primaryKey": "id"
+        },
+        {
+            "name": "devices",
+            "primaryKey": "label"
+        }
+    ]
+}

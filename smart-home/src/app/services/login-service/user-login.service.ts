@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { host, port } from '../constants/hostoptions';
+import { host, port } from '../../constants/hostoptions';
+import {UserRecord}  from '../../../../../models/userRecord';
 
 @Injectable({
   providedIn: 'root'
@@ -60,16 +61,4 @@ export class UserLoginService {
   public getUserData(){
     return this.userData;
   }
-}
-
-interface ChangePWRecord{
-  oldPW: string,
-  newPW: string,
-}
-
-interface UserRecord{
-  name: string,
-  password: string,
-
-  email: string,
 }

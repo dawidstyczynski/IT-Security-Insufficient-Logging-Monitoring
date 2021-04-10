@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserLoginService } from 'src/app/services/user-login.service';
+import { UserLoginService } from 'src/app/services/login-service/user-login.service';
 import { Router } from '@angular/router';
 import { RouteName } from 'src/app/constants/route-name.enum';
 

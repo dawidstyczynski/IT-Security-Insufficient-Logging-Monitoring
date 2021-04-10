@@ -9,11 +9,11 @@ export class UserTableService{
     public async RegisterUser(entry: UserRecord): Promise<UserRecord> {
           let conn = await this.connect();
 
-          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: entry.name} ).run(conn);
+          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
 
           if (exists.length === 0)
           {
-                let result = await r.db(databaseConfig.databaseName).table('user').insert({
+                let result = await r.db(databaseConfig.databaseName).table('User').insert({
                 name: entry.name,
                 password: entry.password,
                 }).run(conn);
@@ -22,7 +22,7 @@ export class UserTableService{
                       throw new Error('Can not create user.');
                 }
 
-                let user = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: entry.name} ).run(conn);
+                let user = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
                 console.log('User registered.');
                 return user[0];
           }
@@ -32,7 +32,7 @@ export class UserTableService{
 
     public async LoginUser(entry: UserRecord): Promise<UserRecord> {
           let conn = await this.connect();
-          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: entry.name, password: entry.password} ).run(conn);
+          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name, password: entry.password} ).run(conn);
 
           if (exists.length === 0)
           {
@@ -45,15 +45,15 @@ export class UserTableService{
 
     public async ChangePW(id : string, entry: ChangePWRecord): Promise<UserRecord>{
           let conn = await this.connect();
-          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: id, password: entry.oldPW} ).run(conn);
+          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).run(conn);
 
           if (exists.length === 0)
           {
                 throw new Error('');
           }
 
-          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: id, password: entry.oldPW} ).update( {password: entry.newPW} ).run(conn);
-          let founduser = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: id} ).run(conn);
+          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).update( {password: entry.newPW} ).run(conn);
+          let founduser = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id} ).run(conn);
           return founduser[0];
     }
 
@@ -66,13 +66,13 @@ export class UserTableService{
                 throw new Error('');
           }
 
-          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: user.name} ).update( {
+          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: user.name} ).update( {
                 name: user.name, 
                 password: user.password, 
                 email: user.email
           }).run(conn);
 
-          let founduser = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter({name: user.name}).run(conn);
+          let founduser = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter({name: user.name}).run(conn);
           return founduser[0];
     }
 

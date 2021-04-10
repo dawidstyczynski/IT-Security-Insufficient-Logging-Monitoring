@@ -22,14 +22,17 @@ import { PasswordModule } from 'primeng/password';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
-import {ChartModule} from 'primeng/chart';
-import {PaginatorModule} from 'primeng/paginator';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {ToastModule} from 'primeng/toast';
-
-import {MessageService} from 'primeng/api';
+import { ChartModule } from 'primeng/chart';
+import { PaginatorModule } from 'primeng/paginator';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { DataViewModule } from 'primeng/dataview';
+ 
+import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
+import { DevicesViewComponent } from './components/devices-view/devices-view.component';
+import { ApiService } from './services/api.service';
 
 
 @NgModule({
@@ -41,8 +44,10 @@ import { FilterService } from 'primeng/api';
     NotFoundPageComponent,
     ProfileComponent,
     DevicesPageComponent,
+    DevicesViewComponent,
   ],
   imports: [
+    DataViewModule,
     BrowserModule,
     AppRoutingModule,
     TableModule,
@@ -64,7 +69,7 @@ import { FilterService } from 'primeng/api';
     ToastModule,
     BrowserAnimationsModule,
   ],
-  providers: [FilterService, MessageService],
+  providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
