@@ -10,20 +10,20 @@ export class LoggingService {
 
   constructor(private client: HttpClient) { }
 
-  public getLogs(username: string, amount : Number) : Promise<LogModel[]>
+  public getLogs(username:string, min: number, max : number) : Promise<LogModel[]>
   {
     if (username == null || username.length == 0)
     {
       console.error("Logs could not be get due to empty username. (see history-service/getLogs)");
     }
 
-    if (amount < 1)
+    if (min < 0)
     {
-      console.error("Expected positive whole number > 0. (see history-service/getLogs)");
+      console.error("Expected positive whole number or 0. (see history-service/getLogs)");
       return;
     }
 
-    return this.client.get<LogModel[]>(host + port + '/logs/' + username + '/' + amount).toPromise();
+    return this.client.get<LogModel[]>(host + port + '/logs/' + min + '/' + max).toPromise();
   }
 
   public async logError(username: string, message : string) : Promise<string>

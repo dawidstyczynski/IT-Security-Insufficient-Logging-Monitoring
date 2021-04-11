@@ -8,7 +8,8 @@ const userTable = new UserTableService();
 router.post('/', (req: Request, res: Response) => {
       console.log('Request to log in.');
       console.info(req.body);
-      userTable.LoginUser(req.body)
+      let {user} = req.body;
+      userTable.LoginUser(user)
       .then((user) =>{
             res.status(200).send(user);
       })

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { config } from 'rxjs';
 import { host, port } from '../../constants/backend-config';
 import { RestUrl } from '../../constants/rest-urls.enum';
 
@@ -18,6 +17,15 @@ export class ApiService {
       this.client.get(this.backend + restUrl)
       .toPromise()
       .then((result: T) => resolve(result))
+      .catch((error) => reject(error))
+    });
+  }
+
+  public GetSomeData<T>(restUrl: RestUrl, filter: any): Promise<T[]> {
+    return new Promise<T[]>((resolve, reject) => {
+      this.client.get(this.backend + restUrl + '/' + filter)
+      .toPromise()
+      .then((result : T[]) => resolve(result))
       .catch((error) => reject(error))
     });
   }
