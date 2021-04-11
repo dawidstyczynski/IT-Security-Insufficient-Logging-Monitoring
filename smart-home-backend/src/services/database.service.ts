@@ -79,6 +79,38 @@ export class DatabaseService {
       }
 
       /**
+       * Updates all entries with specified filter of a database table.
+       * @param entity The change to the entities.
+       * @param filter The filter to get the entries which will be updated.
+       * @param table The table in wich the entity should be changed.
+       * @returns A Promise that returns true if the entries were succesfully changed.
+       */
+      public patch<T>(entity: T, filter: any, table: DatabaseTable): Promise<Boolean> {
+            return new Promise<Boolean>((resolve, reject) => {
+                  this.connect()
+                  .then((connection: Connection) => {
+                        r.db(databaseConfig.databaseName)
+                        .table(table)
+                        .filter(filter)
+                        .update(entity)
+                        .run(connection)
+                        .then(() => {
+                              console.log(table + " entity changed");
+                              resolve(true);
+                        })
+                        .catch((error) => {
+                              console.log(error);
+                              reject(false);
+                        });
+                  })
+                  .catch((error) => {
+                        console.log('Database connection failed')
+                        reject(false);
+                  });
+            });
+      }
+
+      /**
        * Returns all entries of a database table.
        * @param table The database table.
        * @returns A Promise with all entries of a database table.
