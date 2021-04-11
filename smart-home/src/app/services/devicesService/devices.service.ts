@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { RestUrl } from '../constants/rest-urls.enum';
-import { IoTDecice } from '../models/iot-devices.model';
-import { ApiService } from './api.service';
+import { RestUrl } from '../../constants/rest-urls.enum';
+import { IoTDecice } from '../../../../../models/iot-devices.model';
+import { ApiService } from '../apiService/api.service';
 
 @Injectable({
   providedIn: 'root'

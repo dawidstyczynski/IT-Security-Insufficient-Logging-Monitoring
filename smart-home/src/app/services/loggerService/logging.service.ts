@@ -1,4 +1,4 @@
-import { host, port } from '../../constants/hostoptions';
+import { host, port } from '../../constants/backend-config';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {LogModel} from '../../../../../models/log.model';

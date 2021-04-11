@@ -4,10 +4,11 @@ import { loginController } from './api/login/login.controller';
 import { registrationController } from './api/registration/registration.controller';
 import { DatabaseService } from './services/database.service';
 import cors from 'cors';
-import { LogModel } from './api/log/log.model';
+import { LogModel } from '../../models/log.model';
 import { DatabaseTable } from './config/database-table.enum';
 import { devicesController } from './api/devices/devices.controller';
-import { IoTDecice } from './api/devices/iot-devices.model';
+import { IoTDecice } from '../../models/iot-devices.model';
+import { loggingController } from './api/logs/loggingController';
 
 const server = express();
 
@@ -19,6 +20,7 @@ server.use('/login', loginController);
 server.use('/register', registrationController);
 
 server.use('/devices', devicesController);
+server.use('/logs', loggingController);
 
 const databaseService = new DatabaseService();
 databaseService.initialize().then(() => {

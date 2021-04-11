@@ -28,11 +28,12 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
+import {CheckboxModule} from 'primeng/checkbox';
  
 import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
-import { DevicesViewComponent } from './components/devices-view/devices-view.component';
-import { ApiService } from './services/api.service';
+import { ApiService } from './services/apiService/api.service';
+import { DeviceConfigComponent } from './components/device-config/device-config.component';
 
 
 @NgModule({
@@ -44,7 +45,7 @@ import { ApiService } from './services/api.service';
     NotFoundPageComponent,
     ProfileComponent,
     DevicesPageComponent,
-    DevicesViewComponent,
+    DeviceConfigComponent,
   ],
   imports: [
     DataViewModule,
@@ -68,6 +69,7 @@ import { ApiService } from './services/api.service';
     MessageModule,
     ToastModule,
     BrowserAnimationsModule,
+    CheckboxModule,
   ],
   providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],
