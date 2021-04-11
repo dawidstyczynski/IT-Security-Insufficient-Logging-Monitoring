@@ -1,8 +1,8 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
-import { UserRecord } from '../../../../../models/userRecord';
+import { UserRecord } from '../../models/userRecord';
 import { LoggingService } from 'src/app/services/loggerService/logging.service';
 import { UserLoginService } from 'src/app/services/login-service/user-login.service';
-import {LogModel} from '../../../../../models/log.model';
+import {LogModel} from '../../models/log.model';
 
 @Component({
   templateUrl: './history-page.component.html',

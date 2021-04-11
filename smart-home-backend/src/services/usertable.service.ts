@@ -1,7 +1,7 @@
 import { Connection, r, RDatum } from 'rethinkdb-ts';
 import * as databaseConfig from '../config/database-config.json';
-import {UserRecord} from '../../../models/userRecord';
-import {ChangePWRecord} from '../../../models/pwRecord';
+import {UserRecord} from '../models/userRecord';
+import {ChangePWRecord} from '../models/pwRecord';
 
 
 export class UserTableService{

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { DatabaseTable } from '../../config/database-table.enum';
 import { DatabaseService } from '../../services/database.service';
-import {LogModel} from '../../../../models/log.model';
+import {LogModel} from '../../models/log.model';
 
 const router = Router();
 const databaseService = new DatabaseService();

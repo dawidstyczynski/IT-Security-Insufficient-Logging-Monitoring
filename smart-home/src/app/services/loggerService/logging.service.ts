@@ -1,7 +1,7 @@
 import { host, port } from '../../constants/backend-config';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {LogModel} from '../../../../../models/log.model';
+import {LogModel} from '../../models/log.model';
 
 @Injectable({
   providedIn: 'root'

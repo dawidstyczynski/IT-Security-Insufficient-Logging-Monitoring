@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DevicesService } from '../../services/devicesService/devices.service';
-import { IoTDecice } from '../../../../../models/iot-devices.model';
+import { IoTDecice } from '../../models/iot-devices.model';
 import { ApiService } from 'src/app/services/apiService/api.service';
 import { RestUrl } from 'src/app/constants/rest-urls.enum';
 

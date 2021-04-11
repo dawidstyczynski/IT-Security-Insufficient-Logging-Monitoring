@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { TimeoutError } from 'rxjs';
 import { RouteName } from '../constants/route-name.enum';
 import { UserLoginService } from '../services/login-service/user-login.service';
 

@@ -6,7 +6,7 @@ const usertable_service_1 = require("../../services/usertable.service");
 const router = express_1.Router();
 const userTable = new usertable_service_1.UserTableService();
 router.post('/', (req, res) => {
-    console.log('Request to register. XXsgfdhfj');
+    console.log('Request to register.');
     console.info(req.body);
     userTable.RegisterUser(req.body)
         .then((user) => {
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     })
         .catch((error) => {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500).send();
     });
 });
 exports.registrationController = router;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserLoginService } from 'src/app/services/login-service/user-login.service';
-import { UserRecord } from '../../../../../models/userRecord';
+import { UserRecord } from '../../models/userRecord';
 
 @Component({
   templateUrl: './configuration-page.component.html',

@@ -4,16 +4,16 @@
     "databaseName": "smart-home",
     "tables": [
         {
-            "name": "user",
-            "primaryKey": "username"
+            "name": "User",
+            "primaryKey": "Username"
         },
         {
-            "name": "logs",
-            "primaryKey": "id"
+            "name": "Log",
+            "primaryKey": "Id"
         },
         {
-            "name": "devices",
-            "primaryKey": "label"
+            "name": "IoTDevices",
+            "primaryKey": "Name"
         }
     ]
 }

@@ -28,6 +28,9 @@ const login_controller_1 = require("./api/login/login.controller");
 const registration_controller_1 = require("./api/registration/registration.controller");
 const database_service_1 = require("./services/database.service");
 const cors_1 = __importDefault(require("cors"));
+const database_table_enum_1 = require("./config/database-table.enum");
+const devices_controller_1 = require("./api/devices/devices.controller");
+const iot_devices_model_1 = require("../../models/iot-devices.model");
 const loggingController_1 = require("./api/logs/loggingController");
 const server = express_1.default();
 server.use(express_1.default.urlencoded({ extended: false }));
@@ -35,10 +38,13 @@ server.use(express_1.default.json());
 server.use(cors_1.default());
 server.use('/login', login_controller_1.loginController);
 server.use('/register', registration_controller_1.registrationController);
+server.use('/devices', devices_controller_1.devicesController);
 server.use('/logs', loggingController_1.loggingController);
 const databaseService = new database_service_1.DatabaseService();
 databaseService.initialize().then(() => {
     console.log("Database initialized.");
+    const device = new iot_devices_model_1.IoTDecice("03AC", "xx", "s", 2, 3, 4);
+    databaseService.insert(device, database_table_enum_1.DatabaseTable.Devices);
     server.listen(serverConfig.port, function () {
         console.log("Server is running at https://localhost:" + serverConfig.port);
     });
@@ -87,4 +93,4 @@ export interface UserRecord{
       password: string,
       email: string,
 }
-*/
+*/ 

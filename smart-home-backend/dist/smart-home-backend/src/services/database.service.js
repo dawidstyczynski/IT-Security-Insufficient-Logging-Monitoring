@@ -24,7 +24,10 @@ const rethinkdb_ts_1 = require("rethinkdb-ts");
 const databaseConfig = __importStar(require("../config/database-config.json"));
 class DatabaseService {
     constructor() { }
-    /// returns: A promise that returns true if initialization was successful.
+    /**
+     * Initializes the database.
+     * @returns A promise that returns true if initialization was successful.
+     */
     initialize() {
         return new Promise((resolve, reject) => {
             this.connect().then((connection) => {
@@ -34,7 +37,7 @@ class DatabaseService {
                     return rethinkdb_ts_1.r.branch(containsDb, { created: 0 }, rethinkdb_ts_1.r.dbCreate(databaseConfig.databaseName));
                 }).run(connection).then(() => {
                     console.log("database initialized");
-                    this.createTables(connection);
+                    this.initializeTables(connection);
                     resolve(true);
                 });
             }).catch((error) => {
@@ -42,6 +45,10 @@ class DatabaseService {
             });
         });
     }
+    /**
+     * Connects to the database.
+     * @returns A Promise with the connection.
+     */
     connect() {
         return new Promise((resolve, reject) => {
             rethinkdb_ts_1.r.connect({
@@ -58,21 +65,129 @@ class DatabaseService {
             });
         });
     }
-    createTables(connection) {
-        databaseConfig.tables.forEach((table) => {
-            this.createTable(connection, table.name, table.primaryKey);
+    /**
+     * Inserts a row into the database.
+     * @param entity The entity to create.
+     * @param table The table in wich the entity should be created.
+     * @returns A Promise that returns true if the entry was succesfully created.
+     */
+    insert(entity, table) {
+        return new Promise((resolve, reject) => {
+            this.connect()
+                .then((connection) => {
+                rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .table(table)
+                    .insert(entity)
+                    .run(connection)
+                    .then(() => {
+                    console.log(table + " entity created");
+                    resolve(true);
+                })
+                    .catch((error) => {
+                    console.log(error);
+                    reject(false);
+                });
+            })
+                .catch((error) => {
+                console.log('Database connection failed');
+                reject(false);
+            });
         });
     }
-    createTable(connection, tableName, primaryKey) {
-        rethinkdb_ts_1.r.db(databaseConfig.databaseName)
-            .tableList()
-            .contains(tableName)
-            .do((containsTable) => {
-            return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db(databaseConfig.databaseName)
-                .tableCreate(tableName, { primaryKey: primaryKey }));
-        })
-            .run(connection);
-        console.log("table created");
+    /**
+     * Updates all entries with specified filter of a database table.
+     * @param entity The change to the entities.
+     * @param filter The filter to get the entries which will be updated.
+     * @param table The table in wich the entity should be changed.
+     * @returns A Promise that returns true if the entries were succesfully changed.
+     */
+    patch(entity, filter, table) {
+        return new Promise((resolve, reject) => {
+            this.connect()
+                .then((connection) => {
+                rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .table(table)
+                    .filter(filter)
+                    .update(entity)
+                    .run(connection)
+                    .then(() => {
+                    console.log(table + " entity changed");
+                    resolve(true);
+                })
+                    .catch((error) => {
+                    console.log(error);
+                    reject(false);
+                });
+            })
+                .catch((error) => {
+                console.log('Database connection failed');
+                reject(false);
+            });
+        });
+    }
+    /**
+     * Returns all entries of a database table.
+     * @param table The database table.
+     * @returns A Promise with all entries of a database table.
+     */
+    getAllEntries(table) {
+        return new Promise((resolve, reject) => {
+            this.connect()
+                .then((connection) => {
+                rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .table(table)
+                    .filter({})
+                    .run(connection)
+                    .then((entries) => {
+                    resolve(entries);
+                })
+                    .catch((error) => {
+                    reject(error);
+                });
+            })
+                .catch((error) => {
+                console.log('Database connection failed');
+                reject(false);
+            });
+        });
+    }
+    getSomeEntries(min, max, table) {
+        return new Promise((resolve, reject) => {
+            this.connect()
+                .then((connection) => {
+                rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .table(table)
+                    .filter(rethinkdb_ts_1.r.row("id").ge(min).and(rethinkdb_ts_1.r.row("id").le(max)))
+                    .run(connection)
+                    .then((entries) => {
+                    resolve(entries);
+                })
+                    .catch((error) => {
+                    reject(error);
+                });
+            })
+                .catch((error) => {
+                console.log('Database connection failed');
+                reject(false);
+            });
+        });
+    }
+    /**
+     * Initializes all tables in the database.
+     * @param connection The connection to the database.
+     */
+    initializeTables(connection) {
+        databaseConfig.tables.forEach((table) => {
+            rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                .tableList()
+                .contains(table.name)
+                .do((containsTable) => {
+                return rethinkdb_ts_1.r.branch(containsTable, { created: 0 }, rethinkdb_ts_1.r.db(databaseConfig.databaseName)
+                    .tableCreate(table.name, { primaryKey: table.primaryKey }));
+            })
+                .run(connection);
+            console.log("table created");
+        });
     }
 }
 exports.DatabaseService = DatabaseService;

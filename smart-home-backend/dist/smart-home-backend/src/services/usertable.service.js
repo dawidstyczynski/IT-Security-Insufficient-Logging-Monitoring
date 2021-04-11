@@ -37,16 +37,16 @@ class UserTableService {
     RegisterUser(entry) {
         return __awaiter(this, void 0, void 0, function* () {
             let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: entry.name }).run(conn);
+            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: entry.name }).run(conn);
             if (exists.length === 0) {
-                let result = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').insert({
+                let result = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').insert({
                     name: entry.name,
                     password: entry.password,
                 }).run(conn);
                 if (result.inserted === 0) {
                     throw new Error('Can not create user.');
                 }
-                let user = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: entry.name }).run(conn);
+                let user = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: entry.name }).run(conn);
                 console.log('User registered.');
                 return user[0];
             }
@@ -56,7 +56,7 @@ class UserTableService {
     LoginUser(entry) {
         return __awaiter(this, void 0, void 0, function* () {
             let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: entry.name, password: entry.password }).run(conn);
+            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: entry.name, password: entry.password }).run(conn);
             if (exists.length === 0) {
                 throw new Error('User not found.');
             }
@@ -67,12 +67,12 @@ class UserTableService {
     ChangePW(id, entry) {
         return __awaiter(this, void 0, void 0, function* () {
             let conn = yield this.connect();
-            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: id, password: entry.oldPW }).run(conn);
+            let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id, password: entry.oldPW }).run(conn);
             if (exists.length === 0) {
                 throw new Error('');
             }
-            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: id, password: entry.oldPW }).update({ password: entry.newPW }).run(conn);
-            let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: id }).run(conn);
+            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id, password: entry.oldPW }).update({ password: entry.newPW }).run(conn);
+            let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id }).run(conn);
             return founduser[0];
         });
     }
@@ -83,12 +83,12 @@ class UserTableService {
             if (exists.length === 0) {
                 throw new Error('');
             }
-            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: user.name }).update({
+            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: user.name }).update({
                 name: user.name,
                 password: user.password,
                 email: user.email
             }).run(conn);
-            let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: user.name }).run(conn);
+            let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: user.name }).run(conn);
             return founduser[0];
         });
     }
