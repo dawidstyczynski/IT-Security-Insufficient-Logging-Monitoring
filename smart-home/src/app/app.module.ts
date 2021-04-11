@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,6 +12,9 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { DevicesPageComponent } from './pages/devices-page/devices-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { DeviceConfigComponent } from './components/device-config/device-config.component';
+import {ConfigurationPageComponent} from './pages/configuration-page/configuration-page.component';
+import {HistoryPageComponent} from './pages/history-page/history-page.component';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -33,8 +36,6 @@ import {CheckboxModule} from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { ApiService } from './services/apiService/api.service';
-import { DeviceConfigComponent } from './components/device-config/device-config.component';
-
 
 @NgModule({
   declarations: [
@@ -46,6 +47,8 @@ import { DeviceConfigComponent } from './components/device-config/device-config.
     ProfileComponent,
     DevicesPageComponent,
     DeviceConfigComponent,
+    ConfigurationPageComponent,
+    HistoryPageComponent,
   ],
   imports: [
     DataViewModule,
@@ -74,7 +77,7 @@ import { DeviceConfigComponent } from './components/device-config/device-config.
   providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,
   ]
 })
 export class AppModule { }

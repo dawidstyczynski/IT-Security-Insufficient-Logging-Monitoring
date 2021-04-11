@@ -42,6 +42,7 @@ class UserTableService {
                 let result = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').insert({
                     name: entry.name,
                     password: entry.password,
+                    admin: entry.admin
                 }).run(conn);
                 if (result.inserted === 0) {
                     throw new Error('Can not create user.');
@@ -69,9 +70,9 @@ class UserTableService {
             let conn = yield this.connect();
             let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id, password: entry.oldPW }).run(conn);
             if (exists.length === 0) {
-                throw new Error('');
+                throw new Error('User does not exist.');
             }
-            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id, password: entry.oldPW }).update({ password: entry.newPW }).run(conn);
+            yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id, password: entry.oldPW }).update({ password: entry.newPW }).run(conn);
             let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: id }).run(conn);
             return founduser[0];
         });
@@ -81,11 +82,9 @@ class UserTableService {
             let conn = yield this.connect();
             let exists = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('user').filter({ name: user.name, password: user.password }).run(conn);
             if (exists.length === 0) {
-                throw new Error('');
+                throw new Error('User does not exist.');
             }
-            let update = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: user.name }).update({
-                name: user.name,
-                password: user.password,
+            yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: user.name }).update({
                 email: user.email
             }).run(conn);
             let founduser = yield rethinkdb_ts_1.r.db(databaseConfig.databaseName).table('User').filter({ name: user.name }).run(conn);

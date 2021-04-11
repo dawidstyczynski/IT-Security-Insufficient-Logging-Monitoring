@@ -10,7 +10,6 @@ import { UserLoginService } from '../../services/login-service/user-login.servic
 export class ProfileComponent implements OnInit {
 
   public newPW : string;
-
   @Input() public email: string;
 
   constructor(private loginService : UserLoginService) { 

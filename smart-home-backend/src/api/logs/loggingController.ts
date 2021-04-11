@@ -21,12 +21,12 @@ router.post('/', (req: Request, res: Response) =>{
       
 })
 
-router.get('/:min/:max', (req: Request, res: Response) =>{
+router.get('/', (req: Request, res: Response) =>{
       console.log('Request to get logs.');
-      let {min, max} = req.params;
-      let minValue = +min;
-      let maxValue = +max;
-      databaseService.getSomeEntries<LogModel>(minValue, maxValue, DatabaseTable.Log)
+      console.log(req.body);
+      console.log(req.params);
+      let filter : any = req.body;
+      databaseService.getSomeEntries<LogModel>(filter, DatabaseTable.Log)
       .then(logs => {
             res.status(200).send(logs);
       })

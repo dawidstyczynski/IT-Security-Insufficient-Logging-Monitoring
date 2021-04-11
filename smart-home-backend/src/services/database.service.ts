@@ -137,13 +137,13 @@ export class DatabaseService {
             });
       }
 
-      public getSomeEntries<T>(min: number, max: number, table: DatabaseTable): Promise<T[]> {
+      public getSomeEntries<T>(filter: any, table: DatabaseTable): Promise<T[]> {
             return new Promise<T[]>((resolve, reject) => {
                   this.connect()
                   .then((connection: Connection) => {
                         r.db(databaseConfig.databaseName)
                         .table(table)
-                        .filter(r.row("id").ge(min).and(r.row("id").le(max)))
+                        .filter(filter)
                         .run(connection)
                         .then((entries: T[]) => {
                               resolve(entries);

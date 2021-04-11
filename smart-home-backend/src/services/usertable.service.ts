@@ -19,6 +19,7 @@ export class UserTableService{
                 let result = await r.db(databaseConfig.databaseName).table('User').insert({
                 name: entry.name,
                 password: entry.password,
+                admin: entry.admin
                 }).run(conn);
 
                 if (result.inserted === 0){
@@ -52,10 +53,10 @@ export class UserTableService{
 
           if (exists.length === 0)
           {
-                throw new Error('');
+                throw new Error('User does not exist.');
           }
 
-          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).update( {password: entry.newPW} ).run(conn);
+          await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).update( {password: entry.newPW} ).run(conn);
           let founduser = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id} ).run(conn);
           return founduser[0];
     }
@@ -66,12 +67,10 @@ export class UserTableService{
 
           if (exists.length === 0)
           {
-                throw new Error('');
+                throw new Error('User does not exist.');
           }
 
-          let update = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: user.name} ).update( {
-                name: user.name, 
-                password: user.password, 
+          await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: user.name} ).update( {
                 email: user.email
           }).run(conn);
 

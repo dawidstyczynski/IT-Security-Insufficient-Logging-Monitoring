@@ -13,6 +13,7 @@ export class DeviceConfigComponent implements OnInit {
 
   constructor(private deviceService: DevicesService, private apiService: ApiService) {
     this.labelEdit = null;
+    this.rows = 25;
    }
 
   public devices: IoTDecice[];
@@ -20,6 +21,7 @@ export class DeviceConfigComponent implements OnInit {
   public rows : number;
 
   ngOnInit(): void {
+    this.GetDevices();
   }
 
   public GetDevices(){
@@ -44,13 +46,7 @@ export class DeviceConfigComponent implements OnInit {
       return;
     }
 
-    if (this.labelEdit.Name == '')
-    {
-      return;
-    }
-
-    var device = this.devices.find(device => {device.Name == this.labelEdit.Name;});
-    if (device == undefined)
+    if (this.labelEdit.Name.indexOf(' ') <= 0)
     {
       this.apiService.PatchData<IoTDecice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit).then((success) => {
         if (!success)

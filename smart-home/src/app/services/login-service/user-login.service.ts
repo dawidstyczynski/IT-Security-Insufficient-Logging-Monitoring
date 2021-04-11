@@ -18,7 +18,7 @@ export class UserLoginService {
     return this.client.post<UserRecord>(host + port + '/login', user).toPromise()
     .then((user) =>{
       this.userData = user;
-      console.log(this.userData.name);
+      console.log(this.userData);
       return user;
     })
     .catch((error) =>{

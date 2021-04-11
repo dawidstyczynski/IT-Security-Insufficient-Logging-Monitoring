@@ -8,7 +8,8 @@ const userTable = new usertable_service_1.UserTableService();
 router.post('/', (req, res) => {
     console.log('Request to register.');
     console.info(req.body);
-    userTable.RegisterUser(req.body)
+    let user = req.body;
+    userTable.RegisterUser(user)
         .then((user) => {
         res.status(200).send(user);
     })

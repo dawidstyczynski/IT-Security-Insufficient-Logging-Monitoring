@@ -1,6 +1,6 @@
 <app-menu></app-menu>
 
-<p-table [value]="logs" [paginator]="true" [(first)]="first" [(rows)]="rows" [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} / {totalRecords}" [rowsPerPageOptions]="[10,25,50]">
+<p-table [value]="logs" [paginator]="true" [first]="first" [rows]="rows" [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} / {totalRecords}" [rowsPerPageOptions]="[10,25,50]">
       <ng-template pTemplate="header">
           <tr>
               <th>Date</th>

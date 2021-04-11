@@ -1,42 +1,29 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserRecord } from '../../models/userRecord';
 import { LoggingService } from 'src/app/services/loggerService/logging.service';
-import { UserLoginService } from 'src/app/services/login-service/user-login.service';
 import {LogModel} from '../../models/log.model';
+import { ApiService } from 'src/app/services/apiService/api.service';
+import { RestUrl } from 'src/app/constants/rest-urls.enum';
 
 @Component({
   templateUrl: './history-page.component.html',
   styleUrls: ['./history-page.component.scss']
 })
-export class HistoryPageComponent implements OnInit, OnChanges {
+export class HistoryPageComponent implements OnInit {
 
   public logs : LogModel[];
   public rows: number;
   public first: number;
 
-  private user : UserRecord;
-
-  constructor(private logger : LoggingService, private loginService : UserLoginService) { 
+  constructor(private logger : LoggingService, private apiService : ApiService) { 
     this.rows = 25;
     this.first = 0;
   }
 
   ngOnInit(): void {
-    this.logs = this.getHistory();
+    this.apiService.GetData<LogModel[]>(RestUrl.History)
+    .then(data =>{
+      this.logs = data;
+    });
   }
-
-  ngOnChanges() :void{
-    let log : LogModel = {Id: null, User : "christian", Date: new Date(), Message: "has updated History."};
-    var newLogs = this.getHistory();
-    newLogs.push(log);
-    this.logs = newLogs;
-  }
-
-  public getHistory() : LogModel[]
-  {
-    let log : LogModel = {Id: null, User : "christian", Date: new Date(), Message: "has openend History."};
-    return [log];
-    /* get entries from (first) to (first + rows) */
-  }
-
 }

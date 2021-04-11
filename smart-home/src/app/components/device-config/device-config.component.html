@@ -10,7 +10,8 @@
           <tr *ngIf="labelEdit != device">
               <td>{{device.Name}}</td>
               <td>{{device.Purpose}}</td>
-              <td><button pButton type="button" (click)="HandleLabelEdit(device)" class="p-button-primary" icon="pi pi-cog"></button></td>
+              <td><button pButton type="button" (click)="HandleLabelEdit(device)" class="p-button-primary" icon="pi pi-pencil"></button>
+                <button pButton type="button" class="p-button-primary" icon="pi pi-cog"></button></td>
           </tr>
 
           <tr *ngIf="labelEdit == device">
