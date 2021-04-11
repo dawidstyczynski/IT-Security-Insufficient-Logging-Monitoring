@@ -137,6 +137,28 @@ export class DatabaseService {
             });
       }
 
+      public getSomeEntries<T>(min: number, max: number, table: DatabaseTable): Promise<T[]> {
+            return new Promise<T[]>((resolve, reject) => {
+                  this.connect()
+                  .then((connection: Connection) => {
+                        r.db(databaseConfig.databaseName)
+                        .table(table)
+                        .filter(r.row("id").ge(min).and(r.row("id").le(max)))
+                        .run(connection)
+                        .then((entries: T[]) => {
+                              resolve(entries);
+                        })
+                        .catch((error) => {
+                              reject(error);
+                        });
+                  })
+                  .catch((error) => {
+                        console.log('Database connection failed')
+                        reject(false);
+                  });
+            });
+      }
+
       /**
        * Initializes all tables in the database.
        * @param connection The connection to the database.

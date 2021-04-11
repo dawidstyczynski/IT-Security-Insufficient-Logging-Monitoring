@@ -1,5 +1,8 @@
 import { Connection, r, RDatum } from 'rethinkdb-ts';
 import * as databaseConfig from '../config/database-config.json';
+import {UserRecord} from '../../../models/userRecord';
+import {ChangePWRecord} from '../../../models/pwRecord';
+
 
 export class UserTableService{
 
@@ -83,16 +86,4 @@ export class UserTableService{
                 port: databaseConfig.port
           });
     }
-}
-
-export interface ChangePWRecord{
-    oldPW: string,
-    newPW: string,
-}
-
-export interface UserRecord{
-    name: string,
-    password: string,
-
-    email: string,
 }

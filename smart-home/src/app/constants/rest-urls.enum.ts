@@ -1,5 +1,6 @@
 export enum RestUrl {
     Login = '/login',
     Register = '/register',
-    Devices = '/devices'
+    Devices = '/devices',
+    History = '/logs'
 }

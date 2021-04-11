@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DevicesService } from '../../services/devicesService/devices.service';
 import { IoTDecice } from '../../../../../models/iot-devices.model';
 import { ApiService } from 'src/app/services/apiService/api.service';
+import { RestUrl } from 'src/app/constants/rest-urls.enum';
 
 @Component({
   selector: 'app-device-config',
@@ -48,10 +49,10 @@ export class DeviceConfigComponent implements OnInit {
       return;
     }
 
-    var device = this.devices.find(device => {device.Name = this.labelEdit.Name;});
+    var device = this.devices.find(device => {device.Name == this.labelEdit.Name;});
     if (device == undefined)
     {
-      this.apiService.PatchData<IoTDecice, Boolean>("IoTDevices", this.labelEdit).then((success) => {
+      this.apiService.PatchData<IoTDecice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit).then((success) => {
         if (!success)
         {
           console.log("Could not update device label.");

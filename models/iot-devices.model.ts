@@ -1,16 +1,20 @@
 
 export class IoTDecice {
-    constructor(name: string,
+    constructor(id: string,
+                name: string,
                 purpose: string,
                 minValue: number,
                 maxValue: number,
                 currentValue: number) {
+        this.Id = id;
         this.Name = name;
         this.Purpose = purpose;
         this.MinValue = minValue;
         this.MaxValue = maxValue;
         this.CurrentValue = currentValue;
     }
+
+    public Id : string;
 
     public Name: string;
 

@@ -26,7 +26,7 @@ const databaseService = new DatabaseService();
 databaseService.initialize().then(() => {
       console.log("Database initialized.")
 
-      const device = new IoTDecice("xx", "s", 2, 3, 4);
+      const device = new IoTDecice("03AC","xx", "s", 2, 3, 4);
 
       databaseService.insert(device, DatabaseTable.Devices);
       

@@ -31,9 +31,9 @@ export class ApiService {
     });
   }
 
-  public PatchData<TSend, TReceive>(restUrl: string, data: TSend): Promise<TReceive> {
+  public PatchData<TSend, TReceive>(restUrl: string, filter: any, data: TSend): Promise<TReceive> {
     return new Promise<TReceive>((resolve, reject) => {
-      this.client.patch(this.backend + restUrl, data)
+      this.client.patch(this.backend + restUrl, filter, data)
       .toPromise()
       .then((result: TReceive) => resolve(result))
       .catch((error) => reject(error))
