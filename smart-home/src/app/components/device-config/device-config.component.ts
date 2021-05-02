@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DevicesService } from '../../services/devicesService/devices.service';
-import { IoTDecice } from '../../models/iot-devices.model';
+import { IoTDevice } from '../../models/iot-devices.model';
 import { ApiService } from 'src/app/services/apiService/api.service';
 import { RestUrl } from 'src/app/constants/rest-urls.enum';
 
@@ -16,8 +16,8 @@ export class DeviceConfigComponent implements OnInit {
     this.rows = 25;
    }
 
-  public devices: IoTDecice[];
-  public labelEdit: IoTDecice | null;
+  public devices: IoTDevice[];
+  public labelEdit: IoTDevice | null;
   public rows : number;
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class DeviceConfigComponent implements OnInit {
     })
   }
 
-  public HandleLabelEdit(device: IoTDecice){
+  public HandleLabelEdit(device: IoTDevice){
     this.labelEdit = device;
   }
 
@@ -48,7 +48,7 @@ export class DeviceConfigComponent implements OnInit {
 
     if (this.labelEdit.Name.indexOf(' ') <= 0)
     {
-      this.apiService.PatchData<IoTDecice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit).then((success) => {
+      this.apiService.PatchData<IoTDevice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit).then((success) => {
         if (!success)
         {
           console.log("Could not update device label.");

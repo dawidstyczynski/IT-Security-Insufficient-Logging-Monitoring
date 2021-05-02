@@ -1,14 +1,14 @@
 import * as serverConfig from './config/server-config.json';
 import express from "express";
-import { loginController } from './api/login/login.controller';
-import { registrationController } from './api/registration/registration.controller';
+import { loginController } from './api/login.controller';
+import { registrationController } from './api/registration.controller';
 import { DatabaseService } from './services/database.service';
 import cors from 'cors';
-import { LogModel } from './models/log.model';
 import { DatabaseTable } from './config/database-table.enum';
-import { devicesController } from './api/devices/devices.controller';
+import { devicesController } from './api/devices.controller';
 import { IoTDecice } from './models/iot-devices.model';
-import { loggingController } from './api/logs/loggingController';
+import { loggingController } from './api/logging.controller';
+import { IoTDevicePurpose } from './models/iot-device-purpose.enum';
 
 const server = express();
 
@@ -24,20 +24,29 @@ server.use('/logs', loggingController);
 
 const databaseService = new DatabaseService();
 databaseService.initialize().then(() => {
-      console.log("Database initialized.")
-
-      const device = new IoTDecice("03AC","xx", "s", 2, 3, 4);
-
-      databaseService.insert(device, DatabaseTable.Devices);
+      console.log("Database initialized. ✅")
       
+      setDemoDevices();
+
       server.listen(serverConfig.port, function(){
-            console.log("Server is running at https://localhost:" + serverConfig.port);
+            console.log("Server is running at https://localhost:" + serverConfig.port + " ✅");
       });
 })
 .catch((error) => {
-      console.log("Database could not be initialized.");
+      console.log("Database could not be initialized ⚠️");
+      console.log("Server stopped 🔥")
 });
 
+
+function setDemoDevices() {
+      databaseService.insert(new IoTDecice('2', 'Heizung', IoTDevicePurpose.TemperatureModulator, 5, 30, 21), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('3', 'Luftfeuchtigkeit', IoTDevicePurpose.AirMostureSensor, 0, 100, 20), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('4', 'Feinstaub', IoTDevicePurpose.ParticulatesSensor, 0, 5, 1), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('5', 'Licht Wohnzimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('6', 'Licht Küche', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('7', 'Licht Badezimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('8', 'Alarmanlage', IoTDevicePurpose.AlarmSystem, 0, 1, 0), DatabaseTable.Devices);
+}
 
 
 /*
@@ -46,7 +55,7 @@ app.patch('/changePW/:id', function(req, res){
       let { id } = req.params;
       let changePW : ChangePWRecord = req.body;
       console.log(id);
-      console.log(changePW.oldPW);
+      console.log(changePW.oldPW);∂∂
       console.log(changePW.newPW);
       userTable.ChangePW(id, changePW)
       .then((user) =>{

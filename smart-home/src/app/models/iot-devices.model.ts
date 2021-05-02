@@ -1,5 +1,5 @@
 
-export class IoTDecice {
+export class IoTDevice {
     constructor(id: string,
                 name: string,
                 purpose: string,

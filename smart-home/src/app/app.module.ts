@@ -32,10 +32,12 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
 import {CheckboxModule} from 'primeng/checkbox';
+import {InputSwitchModule} from 'primeng/inputswitch';
  
 import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { ApiService } from './services/apiService/api.service';
+import { DevicesViewComponent } from './components/devices-view/devices-view.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { ApiService } from './services/apiService/api.service';
     DeviceConfigComponent,
     ConfigurationPageComponent,
     HistoryPageComponent,
+    DevicesViewComponent
   ],
   imports: [
     DataViewModule,
@@ -73,6 +76,7 @@ import { ApiService } from './services/apiService/api.service';
     ToastModule,
     BrowserAnimationsModule,
     CheckboxModule,
+    InputSwitchModule
   ],
   providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],

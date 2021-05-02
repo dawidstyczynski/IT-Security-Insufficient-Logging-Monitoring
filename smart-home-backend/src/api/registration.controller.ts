@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { UserRecord } from '../../models/userRecord';
-import { UserTableService } from '../../services/usertable.service';
+import { UserRecord } from '../models/userRecord';
+import { UserTableService } from '../services/usertable.service';
 
 const router = Router();
 
