@@ -23,7 +23,6 @@ router.post('/', (req: Request, res: Response) => {
 
 router.patch('/', (req: Request, res: Response) => {
     let {filter, data} = req.body;
-    console.log('Request to patch a IoT Device');
     databaseService.patch<IoTDecice>(data, filter, DatabaseTable.Devices)
     .then((success) => res.status(200).send(success))
     .catch((error) => res.status(500).send());

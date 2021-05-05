@@ -17,4 +17,12 @@ export class DevicesService {
       .catch((error) => reject(error));
     });
   }
+
+  public patchDevice(device: IoTDevice): Promise<IoTDevice> {
+    return new Promise<IoTDevice>((resolve, reject) => {
+      this.apiService.PatchData(RestUrl.Devices, {Id: device.Id}, device)
+      .then((res: IoTDevice) => resolve(res))
+      .catch((error) => reject(error));
+    });
+  }
 }

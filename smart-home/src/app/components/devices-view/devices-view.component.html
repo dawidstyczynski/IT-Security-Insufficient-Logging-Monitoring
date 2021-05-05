@@ -14,8 +14,7 @@
             <tr>
                 <td>{{device.Name}}</td>
                 <td>
-                    <p-slider [(ngModel)]="device.CurrentValue" (onChange)="HandleChange(device)" 
-                    [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
+                    <p-inputSwitch (onChange)="HandleBtnChange(device)" ></p-inputSwitch>
                 </td>
             </tr>
         </ng-template>

@@ -12,6 +12,8 @@ server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
 server.use(cors());
 
+console.log("Started..")
+
 server.post("/log", (req: Request, res: Response) => {
       let log : LogModel = req.body;
       let logger = GetLogger(log.user);

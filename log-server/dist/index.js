@@ -31,6 +31,10 @@ const server = express_1.default();
 server.use(express_1.default.urlencoded({ extended: false }));
 server.use(express_1.default.json());
 server.use(cors_1.default());
+<<<<<<< Updated upstream
+=======
+console.log("Started..");
+>>>>>>> Stashed changes
 server.post("/log", (req, res) => {
     let log = req.body;
     let logger = logging_service_1.GetLogger(log.user);

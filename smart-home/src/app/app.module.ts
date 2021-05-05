@@ -34,7 +34,8 @@ import { DataViewModule } from 'primeng/dataview';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {SliderModule} from 'primeng/slider';
- 
+
+
 import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
 import { ApiService } from './services/apiService/api.service';
