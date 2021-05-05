@@ -19,72 +19,69 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoggingService = void 0;
+exports.SetUpLogger = exports.GetLogger = void 0;
 const log4js = __importStar(require("log4js"));
 const logLevel_enum_1 = require("../models/logLevel.enum");
-class LoggingService {
-    constructor() {
-    }
-    GetLogger(callerName) {
-        return log4js.getLogger(callerName);
-    }
-    SetUpLogger() {
-        return new Promise((resolve, reject) => {
-            try {
-                log4js.configure({
-                    appenders: {
-                        console: {
-                            type: "stdout",
-                            layout: {
-                                type: "colored"
-                            }
-                        },
-                        info: {
-                            type: "file",
-                            filename: "info.log",
-                            keepFileExt: true,
-                            layout: {
-                                type: "basic"
-                            }
-                        },
-                        warn: {
-                            type: "file",
-                            filename: "warn.log",
-                            keepFileExt: true,
-                            layout: {
-                                type: "colored"
-                            }
-                        },
-                        error: {
-                            type: "file",
-                            filename: "error.log",
-                            layout: {
-                                type: "colored"
-                            }
+function GetLogger(callerName) {
+    return log4js.getLogger(callerName);
+}
+exports.GetLogger = GetLogger;
+function SetUpLogger() {
+    return new Promise((resolve, reject) => {
+        try {
+            log4js.configure({
+                appenders: {
+                    console: {
+                        type: "stdout",
+                        layout: {
+                            type: "colored"
                         }
                     },
-                    categories: {
-                        default: {
-                            appenders: ["info", "console"],
-                            level: logLevel_enum_1.LogLevel.Info
-                        },
-                        problem: {
-                            appenders: ["warn"],
-                            level: logLevel_enum_1.LogLevel.Warn
-                        },
-                        risk: {
-                            appenders: ["error"],
-                            level: logLevel_enum_1.LogLevel.Error
+                    info: {
+                        type: "file",
+                        filename: "info.log",
+                        keepFileExt: true,
+                        layout: {
+                            type: "basic"
+                        }
+                    },
+                    warn: {
+                        type: "file",
+                        filename: "warn.log",
+                        keepFileExt: true,
+                        layout: {
+                            type: "colored"
+                        }
+                    },
+                    error: {
+                        type: "file",
+                        filename: "error.log",
+                        layout: {
+                            type: "colored"
                         }
                     }
-                });
-                resolve(true);
-            }
-            catch (error) {
-                reject(error);
-            }
-        });
-    }
-    ;
+                },
+                categories: {
+                    default: {
+                        appenders: ["info", "console"],
+                        level: logLevel_enum_1.LogLevel.Info
+                    },
+                    problem: {
+                        appenders: ["warn"],
+                        level: logLevel_enum_1.LogLevel.Warn
+                    },
+                    risk: {
+                        appenders: ["error"],
+                        level: logLevel_enum_1.LogLevel.Error
+                    }
+                }
+            });
+            resolve();
+        }
+        catch (error) {
+            reject(error);
+        }
+    });
 }
-exports.LoggingService = LoggingService;
+exports.SetUpLogger = SetUpLogger;
+;

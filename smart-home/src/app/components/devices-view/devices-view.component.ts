@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RestUrl } from 'src/app/constants/rest-urls.enum';
 import { IoTDevicePurpose } from 'src/app/models/iot-device-purpose.enum';
 import { IoTDevice } from 'src/app/models/iot-devices.model';
+import { ApiService } from 'src/app/services/apiService/api.service';
 import { DevicesService } from 'src/app/services/devicesService/devices.service';
 
 @Component({
@@ -22,13 +24,15 @@ export class DevicesViewComponent implements OnInit {
 
   public Leds: IoTDevice[];
 
-  constructor(private devicesService: DevicesService) { }
+  constructor(private devicesService: DevicesService, private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.devicesService.getDevices().then(devices => this.devices = devices);
   }
 
   public HandleChange(e: IoTDevice) {
-    console.log(e);
+    this.apiService.PatchData(RestUrl.Devices, {id: e.Id}, e).then(()=>{
+      console.log(e);
+    });
   }
 }

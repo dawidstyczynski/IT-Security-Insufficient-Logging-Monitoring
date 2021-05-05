@@ -27,30 +27,29 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const logging_service_1 = require("./services/logging.service");
 const logLevel_enum_1 = require("./models/logLevel.enum");
-const logger = new logging_service_1.LoggingService();
 const server = express_1.default();
 server.use(express_1.default.urlencoded({ extended: false }));
 server.use(express_1.default.json());
 server.use(cors_1.default());
-server.post("/", (req, res) => {
-    let { user, loglevel, message } = req.body;
-    let log = logger.GetLogger(user);
-    switch (loglevel) {
+server.post("/log", (req, res) => {
+    let log = req.body;
+    let logger = logging_service_1.GetLogger(log.user);
+    switch (log.loglevel) {
         case logLevel_enum_1.LogLevel.Info: {
-            log.info(message);
+            logger.info(log.message);
             break;
         }
         case logLevel_enum_1.LogLevel.Warn: {
-            log.warn(message);
+            logger.warn(log.message);
             break;
         }
         case logLevel_enum_1.LogLevel.Error: {
-            log.error(message);
+            logger.error(log.message);
             break;
         }
     }
 });
-logger.SetUpLogger()
+logging_service_1.SetUpLogger()
     .then(() => {
     server.listen(serverConfig.port, function () {
         console.log("Server is running at port " + serverConfig.port + " ✅");
