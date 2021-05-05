@@ -1,18 +1,23 @@
 <p-table [value]="devices">
     <ng-template pTemplate="body" let-device>
-        <tr *ngIf="device.Purpose == 'TemperatureModulator' || device.Purpose == 'AirMostureSensor'">
-            <td>{{device.Name}}</td>
-            <td>
-                <p-slider (onChange)="HandleChange($event)" 
-                [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
-            </td>
-        </tr>
-        <tr *ngIf="device.Purpose != 'TemperatureModulator' && device.Purpose != 'AirMostureSensor'">
-            <td>{{device.Name}}</td>
-            <td>
-                <p-slider (onChange)="HandleChange($event)" 
-                [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
-            </td>
-        </tr>
+        <div *ngIf="device.Purpose == 'TemperatureModulator' || device.Purpose == 'AirMostureSensor'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <tr>
+                <td>{{device.Name}}</td>
+                <td>
+                    <p-slider [(ngModel)]="device.CurrentValue" (onChange)="HandleChange(device)" 
+                    [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #elseBlock>
+            <tr>
+                <td>{{device.Name}}</td>
+                <td>
+                    <p-slider [(ngModel)]="device.CurrentValue" (onChange)="HandleChange(device)" 
+                    [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
+                </td>
+            </tr>
+        </ng-template>
     </ng-template>
 </p-table>

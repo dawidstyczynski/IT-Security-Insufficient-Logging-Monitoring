@@ -49,7 +49,7 @@ function setDemoDevices() {
       databaseService.insert(new IoTDecice('3', 'Luftfeuchtigkeit', IoTDevicePurpose.AirMostureSensor, 0, 100, 20), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('4', 'Feinstaub', IoTDevicePurpose.ParticulatesSensor, 0, 5, 1), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('5', 'Licht Wohnzimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
-      databaseService.insert(new IoTDecice('6', 'Licht Küche', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
+      databaseService.insert(new IoTDecice('6', 'Licht Küche', IoTDevicePurpose.LED, 0, 100, 1), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('7', 'Licht Badezimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('8', 'Alarmanlage', IoTDevicePurpose.AlarmSystem, 0, 1, 0), DatabaseTable.Devices);
 }

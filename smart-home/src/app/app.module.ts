@@ -33,6 +33,7 @@ import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {SliderModule} from 'primeng/slider';
  
 import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
@@ -76,7 +77,8 @@ import { DevicesViewComponent } from './components/devices-view/devices-view.com
     ToastModule,
     BrowserAnimationsModule,
     CheckboxModule,
-    InputSwitchModule
+    InputSwitchModule,
+    SliderModule
   ],
   providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],
