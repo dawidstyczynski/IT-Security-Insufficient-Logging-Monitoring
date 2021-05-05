@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRecord } from '../../models/userRecord';
 import { LoggingService } from 'src/app/services/loggerService/logging.service';
-import {LogModel} from '../../models/log.model';
+import {HistoryModel} from '../../models/history.model';
 import { ApiService } from 'src/app/services/apiService/api.service';
 import { RestUrl } from 'src/app/constants/rest-urls.enum';
 
@@ -11,7 +11,7 @@ import { RestUrl } from 'src/app/constants/rest-urls.enum';
 })
 export class HistoryPageComponent implements OnInit {
 
-  public logs : LogModel[];
+  public logs : HistoryModel[];
   public rows: number;
   public first: number;
 
@@ -21,7 +21,7 @@ export class HistoryPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiService.GetData<LogModel[]>(RestUrl.History)
+    this.apiService.GetData<HistoryModel[]>(RestUrl.History)
     .then(data =>{
       this.logs = data;
     });

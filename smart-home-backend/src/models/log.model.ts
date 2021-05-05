@@ -1,16 +1,13 @@
+import { LogLevel } from "./logLevel.enum";
+
 export class LogModel {
-    
-    constructor(id: number, user: string, date: Date, message: string) {
-        this.Id = id;
-        this.User = user;
-        this.Date = date;
-        this.Message = message;
-    }
+      constructor(user :string, loglevel :LogLevel, message :string){
+            this.user = user;
+            this.loglevel = loglevel;
+            this.message = message;
+      }
 
-    public Id: number;
-
-    public User: string;
-    public Date : Date
-
-    public Message: String;
+      public user: string;
+      public loglevel: LogLevel;
+      public message: string;
 }

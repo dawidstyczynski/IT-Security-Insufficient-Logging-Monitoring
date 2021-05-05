@@ -1,7 +1,7 @@
 import { host, port } from '../../constants/backend-config';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {LogModel} from '../../models/log.model';
+import {HistoryModel} from '../../models/history.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class LoggingService {
     let date = new Date();
     let log = {user: username, date: date.toDateString(), time: date.toTimeString(), message: "ERROR: " + message};
 
-    return this.client.post<LogModel>(host + port + '/logs', log).toPromise()
+    return this.client.post<HistoryModel>(host + port + '/logs', log).toPromise()
     .then(() => {
       return "Errorlog has been added.";
     })
@@ -47,7 +47,7 @@ export class LoggingService {
     let date = new Date();
     let log = {user: username, date: date.toDateString(), time: date.toTimeString(), message: message};
 
-    return this.client.post<LogModel>(host + port + '/logs', log).toPromise()
+    return this.client.post<HistoryModel>(host + port + '/logs', log).toPromise()
     .then(() => {
       return "Log has been added.";
     })

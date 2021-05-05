@@ -24,14 +24,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const serverConfig = __importStar(require("./config/server-config.json"));
 const express_1 = __importDefault(require("express"));
-const login_controller_1 = require("./api/login/login.controller");
-const registration_controller_1 = require("./api/registration/registration.controller");
+const login_controller_1 = require("./api/login.controller");
+const registration_controller_1 = require("./api/registration.controller");
 const database_service_1 = require("./services/database.service");
 const cors_1 = __importDefault(require("cors"));
 const database_table_enum_1 = require("./config/database-table.enum");
-const devices_controller_1 = require("./api/devices/devices.controller");
+const devices_controller_1 = require("./api/devices.controller");
 const iot_devices_model_1 = require("./models/iot-devices.model");
-const loggingController_1 = require("./api/logs/loggingController");
+const logging_controller_1 = require("./api/logging.controller");
+const iot_device_purpose_enum_1 = require("./models/iot-device-purpose.enum");
+const logging_service_1 = require("./services/logging.service");
+const logLevel_enum_1 = require("./models/logLevel.enum");
 const server = express_1.default();
 server.use(express_1.default.urlencoded({ extended: false }));
 server.use(express_1.default.json());
@@ -39,26 +42,38 @@ server.use(cors_1.default());
 server.use('/login', login_controller_1.loginController);
 server.use('/register', registration_controller_1.registrationController);
 server.use('/devices', devices_controller_1.devicesController);
-server.use('/logs', loggingController_1.loggingController);
+server.use('/logs', logging_controller_1.loggingController);
 const databaseService = new database_service_1.DatabaseService();
+const logger = new logging_service_1.LoggingService();
 databaseService.initialize().then(() => {
-    console.log("Database initialized.");
-    const device = new iot_devices_model_1.IoTDecice("03AC", "xx", "s", 2, 3, 4);
-    databaseService.insert(device, database_table_enum_1.DatabaseTable.Devices);
+    console.log("Database initialized. ✅");
+    setDemoDevices();
     server.listen(serverConfig.port, function () {
-        console.log("Server is running at https://localhost:" + serverConfig.port);
+        console.log("Server is running at https://localhost:" + serverConfig.port + " ✅");
+        let text = "Server is running at https://localhost:" + serverConfig.port;
+        logger.SendLog({ user: "server", loglevel: logLevel_enum_1.LogLevel.Info, message: text });
     });
 })
     .catch((error) => {
-    console.log("Database could not be initialized.");
+    console.log("Database could not be initialized ⚠️");
+    console.log("Server stopped 🔥");
 });
+function setDemoDevices() {
+    databaseService.insert(new iot_devices_model_1.IoTDecice('2', 'Heizung', iot_device_purpose_enum_1.IoTDevicePurpose.TemperatureModulator, 5, 30, 21), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('3', 'Luftfeuchtigkeit', iot_device_purpose_enum_1.IoTDevicePurpose.AirMostureSensor, 0, 100, 20), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('4', 'Feinstaub', iot_device_purpose_enum_1.IoTDevicePurpose.ParticulatesSensor, 0, 5, 1), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('5', 'Licht Wohnzimmer', iot_device_purpose_enum_1.IoTDevicePurpose.LED, 0, 100, 0), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('6', 'Licht Küche', iot_device_purpose_enum_1.IoTDevicePurpose.LED, 0, 100, 0), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('7', 'Licht Badezimmer', iot_device_purpose_enum_1.IoTDevicePurpose.LED, 0, 100, 0), database_table_enum_1.DatabaseTable.Devices);
+    databaseService.insert(new iot_devices_model_1.IoTDecice('8', 'Alarmanlage', iot_device_purpose_enum_1.IoTDevicePurpose.AlarmSystem, 0, 1, 0), database_table_enum_1.DatabaseTable.Devices);
+}
 /*
 app.patch('/changePW/:id', function(req, res){
       console.log('Request to changePW');
       let { id } = req.params;
       let changePW : ChangePWRecord = req.body;
       console.log(id);
-      console.log(changePW.oldPW);
+      console.log(changePW.oldPW);∂∂
       console.log(changePW.newPW);
       userTable.ChangePW(id, changePW)
       .then((user) =>{

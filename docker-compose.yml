@@ -24,7 +24,19 @@ services:
             - 28015:28015
             - 29015:29015
             - 8080:8080
-
+    
+    log-server:
+        build:
+            context: ./log-server
+            dockerfile: Dockerfile
+        container_name: log-server
+        networks:
+            - smart-home
+        ports:
+            - 5500:5500
+        volumes:
+            - ./log-server/src:/usr/backend/src
+        command: npm run dev
 
 networks:
     smart-home:

@@ -15,7 +15,8 @@ router.get('/', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
     console.log('Request to post a IoT Device');
-    databaseService.insert<IoTDecice>(req.body, DatabaseTable.Devices)
+    let entity : IoTDecice = req.body;
+    databaseService.insert<IoTDecice>(entity, DatabaseTable.Devices)
     .then((success) => res.status(200).send(success))
     .catch((error) => res.status(500).send());
 });

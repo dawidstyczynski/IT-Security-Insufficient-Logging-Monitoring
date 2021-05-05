@@ -151,13 +151,13 @@ class DatabaseService {
             });
         });
     }
-    getSomeEntries(min, max, table) {
+    getSomeEntries(filter, table) {
         return new Promise((resolve, reject) => {
             this.connect()
                 .then((connection) => {
                 rethinkdb_ts_1.r.db(databaseConfig.databaseName)
                     .table(table)
-                    .filter(rethinkdb_ts_1.r.row("id").ge(min).and(rethinkdb_ts_1.r.row("id").le(max)))
+                    .filter(filter)
                     .run(connection)
                     .then((entries) => {
                     resolve(entries);
