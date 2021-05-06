@@ -1,1 +1,5 @@
 smart-home-backend/node_modules/
+smart-home-backend/dist/
+
+log-server/node_modules
+log-server/dist

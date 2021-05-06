@@ -2,6 +2,9 @@ import { Connection, r, RDatum } from 'rethinkdb-ts';
 import * as databaseConfig from '../config/database-config.json';
 import {UserRecord} from '../models/userRecord';
 import {ChangePWRecord} from '../models/pwRecord';
+import { logger } from './logging.service';
+import { LogModel } from '../models/log.model';
+import { LogLevel } from '../models/logLevel.enum';
 
 
 export class UserTableService{
@@ -10,6 +13,9 @@ export class UserTableService{
     }
 
     public async RegisterUser(entry: UserRecord): Promise<UserRecord> {
+
+      logger.info("server", "New user registerd ⚠️");
+
           let conn = await this.connect();
 
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
@@ -27,7 +33,7 @@ export class UserTableService{
                 }
 
                 let user = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
-                console.log('User registered.');
+
                 return user[0];
           }
 
@@ -35,6 +41,8 @@ export class UserTableService{
     }
 
     public async LoginUser(entry: UserRecord): Promise<UserRecord> {
+            logger.info("server", "New login ⚠️");
+
           let conn = await this.connect();
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name, password: entry.password} ).run(conn);
 
@@ -43,11 +51,12 @@ export class UserTableService{
                 throw new Error('User not found.');
           }
 
-          console.log('User exists.');
           return exists[0];
     }
 
     public async ChangePW(id : string, entry: ChangePWRecord): Promise<UserRecord>{
+            logger.info("server", "Request to change password ⚠️");
+
           let conn = await this.connect();
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).run(conn);
 
@@ -62,6 +71,8 @@ export class UserTableService{
     }
 
     public async ChangeEmail(user: UserRecord): Promise<UserRecord>{
+      logger.info("server", "Request to change email ⚠️");
+
           let conn = await this.connect();
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: user.name, password: user.password} ).run(conn);
 

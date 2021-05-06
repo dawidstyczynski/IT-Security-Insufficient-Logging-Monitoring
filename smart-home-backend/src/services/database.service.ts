@@ -1,6 +1,9 @@
 import { Connection, r, RDatum } from 'rethinkdb-ts';
 import * as databaseConfig from '../config/database-config.json';
 import { DatabaseTable } from '../config/database-table.enum';
+import { LogModel } from '../models/log.model';
+import { LogLevel } from '../models/logLevel.enum';
+import { logger } from './logging.service';
 
 export class DatabaseService {
       constructor() {}
@@ -17,11 +20,13 @@ export class DatabaseService {
                         .do((containsDb: RDatum<boolean>) => {
                               return r.branch(containsDb, { created: 0 }, r.dbCreate(databaseConfig.databaseName));
                         }).run(connection).then(() => {
-                              console.log("database initialized");
+                              logger.info("server", "Database initialized");
+
                               this.initializeTables(connection);
                               resolve(true);
                         })
                   }).catch((error) => {
+                        logger.error("server", "Database NOT initialized");
                         reject(error);
                   });
             });
@@ -39,10 +44,9 @@ export class DatabaseService {
                   })
                   .then((connection: Connection) => {
                         resolve(connection);
-                        console.log("connected");
                   })
                   .catch((error) => {
-                        console.log("connection refused.");
+                        logger.error("server", "connection to database failed")
                         reject();
                   });
             });
@@ -63,16 +67,14 @@ export class DatabaseService {
                         .insert(entity)
                         .run(connection)
                         .then(() => {
-                              console.log(table + " entity created");
                               resolve(true);
                         })
                         .catch((error) => {
-                              console.log(error);
                               reject(false);
                         });
                   })
                   .catch((error) => {
-                        console.log('Database connection failed')
+                        logger.error("server", "Entity not inserted")
                         reject(false);
                   });
             });
@@ -104,7 +106,7 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
-                        console.log('Database connection failed')
+                        logger.error("server", "Entity not updated")
                         reject(false);
                   });
             });
@@ -131,7 +133,6 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
-                        console.log('Database connection failed')
                         reject(false);
                   });
             });
@@ -153,7 +154,7 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
-                        console.log('Database connection failed')
+                        logger.error("server", 'Database connection failed')
                         reject(false);
                   });
             });
@@ -173,7 +174,6 @@ export class DatabaseService {
                         .tableCreate(table.name, { primaryKey: table.primaryKey }));
                   })
                   .run(connection);
-                  console.log("table created");
             });
       }
 }

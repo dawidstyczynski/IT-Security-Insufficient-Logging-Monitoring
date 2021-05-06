@@ -9,8 +9,9 @@ import { devicesController } from './api/devices.controller';
 import { IoTDecice } from './models/iot-devices.model';
 import { loggingController } from './api/logging.controller';
 import { IoTDevicePurpose } from './models/iot-device-purpose.enum';
-import {SendLog} from './services/logging.service';
 import {LogLevel} from './models/logLevel.enum';
+import { LogModel } from './models/log.model';
+import { logger } from './services/logging.service';
 
 const server = express();
 
@@ -27,22 +28,16 @@ server.use('/logs', loggingController);
 const databaseService = new DatabaseService();
 
 databaseService.initialize().then(() => {
-      console.log("Database initialized. ✅")
-      
       setDemoDevices();
 
       server.listen(serverConfig.port, function(){
-            console.log("Server is running at http://localhost:" + serverConfig.port + " ✅");
-
-            let text = "Server is running at http://localhost:" + serverConfig.port;
-            SendLog({user: "server", loglevel: LogLevel.Info, message: text});
+            logger.info("server", "Server started");
+            logger.info("server", "Server is listening at http://localhost:" + serverConfig.port);
       });
 })
 .catch((error) => {
-      console.log("Database could not be initialized ⚠️");
-      console.log("Server stopped 🔥")
+      logger.error("server", "Server stopped" + error)
 });
-
 
 function setDemoDevices() {
       databaseService.insert(new IoTDecice('2', 'Heizung', IoTDevicePurpose.TemperatureModulator, 5, 30, 21), DatabaseTable.Devices);
@@ -53,7 +48,6 @@ function setDemoDevices() {
       databaseService.insert(new IoTDecice('7', 'Licht Badezimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('8', 'Alarmanlage', IoTDevicePurpose.AlarmSystem, 0, 1, 0), DatabaseTable.Devices);
 }
-
 
 /*
 app.patch('/changePW/:id', function(req, res){

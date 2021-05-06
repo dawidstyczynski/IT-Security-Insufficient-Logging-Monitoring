@@ -25,7 +25,7 @@ export class DevicesViewComponent implements OnInit {
   }
 
   public HandleBtnChange(e: IoTDevice) {
-    e.CurrentValue = (e.CurrentValue == e.MaxValue) ? e.MinValue : e.MinValue;
+    e.CurrentValue = (e.CurrentValue == e.MaxValue) ? e.MinValue : e.MaxValue;
     this.devicesService.patchDevice(e).then();
   }
 }

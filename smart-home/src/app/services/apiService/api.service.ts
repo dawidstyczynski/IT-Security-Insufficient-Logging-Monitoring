@@ -34,7 +34,7 @@ export class ApiService {
     return new Promise<TReceive>((resolve, reject) => {
       this.client.post(this.backend + restUrl, data)
       .toPromise()
-      .then((result: TReceive) => resolve(result))
+      .then((result: TReceive) => { console.log(data); resolve(result)})
       .catch((error) => reject(error))
     });
   }
