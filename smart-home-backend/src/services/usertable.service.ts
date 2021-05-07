@@ -65,7 +65,7 @@ export class UserTableService{
     }
 
     public async ChangePW(id : string, entry: ChangePWRecord): Promise<UserRecord>{
-            logger.info("server", "Request to change password ⚠️");
+            logger.info("server", "Request to change password");
 
           let conn = await this.connect();
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: id, password: entry.oldPW} ).run(conn);
@@ -81,7 +81,7 @@ export class UserTableService{
     }
 
     public async ChangeEmail(user: UserRecord): Promise<UserRecord>{
-      logger.info("server", "Request to change email ⚠️");
+      logger.info("server", "Request to change email");
 
           let conn = await this.connect();
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('user').filter( {name: user.name, password: user.password} ).run(conn);

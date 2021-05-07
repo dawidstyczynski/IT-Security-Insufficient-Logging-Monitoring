@@ -10,6 +10,5 @@ export class HistoryModel {
     public Id: number | undefined;
     public User: string;
     public Date : Date
-
     public Message: String;
 }

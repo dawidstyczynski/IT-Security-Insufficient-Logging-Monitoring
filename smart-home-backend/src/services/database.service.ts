@@ -26,7 +26,7 @@ export class DatabaseService {
                               resolve(true);
                         })
                   }).catch((error) => {
-                        logger.error("server", "Database NOT initialized");
+                        logger.error("server", "Database could not be initialized");
                         reject(error);
                   });
             });
@@ -97,7 +97,6 @@ export class DatabaseService {
                         .update(entity)
                         .run(connection)
                         .then(() => {
-                              console.log(table + " entity changed");
                               resolve(true);
                         })
                         .catch((error) => {

@@ -15,6 +15,10 @@ router.get('/', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
     let entity : IoTDecice = req.body;
+
+    const ip = req.ip;
+    logger.info(ip, "Request to post " + entity.Id);
+
     databaseService.insert<IoTDecice>(entity, DatabaseTable.Devices)
     .then((success) => res.status(200).send(success))
     .catch((error) => res.status(500).send());
@@ -22,6 +26,10 @@ router.post('/', (req: Request, res: Response) => {
 
 router.patch('/', (req: Request, res: Response) => {
     let {filter, data} = req.body;
+
+    const ip = req.ip;
+    logger.info(ip, "Request to patch " + data.Id);
+
     databaseService.patch<IoTDecice>(data, filter, DatabaseTable.Devices)
     .then((success) => res.status(200).send(success))
     .catch((error) => res.status(500).send());

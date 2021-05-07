@@ -9,6 +9,8 @@ import { devicesController } from './api/devices.controller';
 import { IoTDecice } from './models/iot-devices.model';
 import { loggingController } from './api/logging.controller';
 import { IoTDevicePurpose } from './models/iot-device-purpose.enum';
+import { LogLevel } from './models/logLevel.enum';
+import { LogModel } from './models/log.model';
 import { logger } from './services/logging.service';
 
 const server = express();
@@ -22,6 +24,14 @@ server.use('/register', registrationController);
 
 server.use('/devices', devicesController);
 server.use('/logs', loggingController);
+
+// Add middleware to require ip adress.
+const requestIp = require('request-ip');
+server.use(requestIp.mw())
+server.use(function(req, res) {
+    const ip = req.ip;
+    res.end(ip);
+});
 
 const databaseService = new DatabaseService();
 
@@ -46,46 +56,3 @@ function setDemoDevices() {
       databaseService.insert(new IoTDecice('7', 'Licht Badezimmer', IoTDevicePurpose.LED, 0, 100, 0), DatabaseTable.Devices);
       databaseService.insert(new IoTDecice('8', 'Alarmanlage', IoTDevicePurpose.AlarmSystem, 0, 1, 0), DatabaseTable.Devices);
 }
-
-/*
-app.patch('/changePW/:id', function(req, res){
-      console.log('Request to changePW');
-      let { id } = req.params;
-      let changePW : ChangePWRecord = req.body;
-      console.log(id);
-      console.log(changePW.oldPW);∂∂
-      console.log(changePW.newPW);
-      userTable.ChangePW(id, changePW)
-      .then((user) =>{
-            console.log(user);
-            res.status(200).send(user);
-      })
-      .catch((error) =>{
-            console.log(error);
-            res.status(500).send(error);
-      });
-})
-app.patch('/email', function(req, res){
-      console.log('Request to change email.');
-      let user : UserRecord = req.body;
-      console.log(user);
-      userTable.ChangeEmail(user)
-      .then((user) =>{
-            console.log(user);
-            res.status(200).send(user);
-      })
-      .catch((error) =>{
-            console.log(error);
-            res.status(500).send(error);
-      })
-})
-export interface ChangePWRecord{
-      oldPW: string,
-      newPW: string,
-}
-export interface UserRecord{
-      name: string,
-      password: string,
-      email: string,
-}
-*/
