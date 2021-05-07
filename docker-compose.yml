@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+    smart-home-backend:
+        build:
+            context: ./smart-home-backend
+            dockerfile: Dockerfile
+        container_name: smart-home-backend
+        networks:
+            - smart-home
+        ports:
+            - 3000:3000
+        volumes:
+            - ./smart-home-backend/src:/usr/backend/src
+        command: npm run dev
+
+    smart-home-db:
+        build: ./smart-home-db
+        image: smart-home-db
+        container_name: smart-home-db
+        networks:
+            - smart-home
+        ports:
+            - 28015:28015
+            - 29015:29015
+            - 8080:8080
+    
+    log-server:
+        build:
+            context: ./log-server
+            dockerfile: Dockerfile
+        container_name: log-server
+        networks:
+            - smart-home
+        ports:
+            - 5500:5500
+        volumes:
+            - ./log-server/src:/usr/backend/src
+        command: npm run dev
+
+networks:
+    smart-home:
+        external: true

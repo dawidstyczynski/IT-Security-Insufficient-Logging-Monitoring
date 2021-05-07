@@ -1,0 +1,25 @@
+<p-table [value]="devices" [paginator]="true" [(rows)]="rows" [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} / {totalRecords}" [rowsPerPageOptions]="[10,25,50]">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Label</th>
+              <th>Function</th>
+              <th>Settings</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-device>
+          <tr *ngIf="labelEdit != device">
+              <td>{{device.Name}}</td>
+              <td>{{device.Purpose}}</td>
+              <td><button pButton type="button" (click)="HandleLabelEdit(device)" class="p-button-primary" icon="pi pi-pencil"></button>
+                <button pButton type="button" class="p-button-primary" icon="pi pi-cog"></button></td>
+          </tr>
+
+          <tr *ngIf="labelEdit == device">
+            <td><input type="text" class="form-control" [(ngModel)]="device.Name" pInputText pTooltip="Enter a label" tooltipPosition="top" tooltipEvent="focus"></td>
+            <td>{{device.Purpose}}</td>
+            <td>
+                <button pButton type="button" (click)="HandleLabelSave()" class="p-button-primary" icon="pi pi-save"></button>
+                <button pButton type="button" (click)="HandleLabelCancel()" class="p-button-danger" icon="pi pi-cancel"></button></td>
+        </tr>
+      </ng-template>
+  </p-table>

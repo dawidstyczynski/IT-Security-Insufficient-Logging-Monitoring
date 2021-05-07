@@ -1,0 +1,22 @@
+<p-table [value]="devices">
+    <ng-template pTemplate="body" let-device>
+        <div *ngIf="device.Purpose == 'TemperatureModulator' || device.Purpose == 'AirMostureSensor'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <tr>
+                <td>{{device.Name}}</td>
+                <td>
+                    <p-slider [(ngModel)]="device.CurrentValue" (onChange)="HandleChange(device)" 
+                    [min]="device.MinValue" [max]="device.MaxValue"></p-slider>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #elseBlock>
+            <tr>
+                <td>{{device.Name}}</td>
+                <td>
+                    <p-inputSwitch (onChange)="HandleBtnChange(device)" ></p-inputSwitch>
+                </td>
+            </tr>
+        </ng-template>
+    </ng-template>
+</p-table>

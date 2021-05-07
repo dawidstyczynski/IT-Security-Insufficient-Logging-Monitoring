@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { UserLoginService } from '../services/user-login.service';
+import { UserLoginService } from '../services/login-service/user-login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +18,6 @@ export class ReverseAuthGuard implements CanActivate {
         return true;
       }
       
-      return this.router.createUrlTree(['lib']);
+      return this.router.createUrlTree(['/devices']);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as hash from 'object-hash';
-import { UserLoginService } from '../../services/user-login.service';
+import { UserLoginService } from '../../services/login-service/user-login.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +10,6 @@ import { UserLoginService } from '../../services/user-login.service';
 export class ProfileComponent implements OnInit {
 
   public newPW : string;
-
   @Input() public email: string;
 
   constructor(private loginService : UserLoginService) { 

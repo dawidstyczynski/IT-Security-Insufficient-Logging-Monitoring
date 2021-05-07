@@ -1,19 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { ConfigurationComponent } from './components/configuration/configuration.component';
-import { HistoryComponent } from './components/history/history.component';
-import { DevicesComponent } from './components/devices/devices.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { DevicesPageComponent } from './pages/devices-page/devices-page.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { DeviceConfigComponent } from './components/device-config/device-config.component';
+import {ConfigurationPageComponent} from './pages/configuration-page/configuration-page.component';
+import {HistoryPageComponent} from './pages/history-page/history-page.component';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -24,28 +25,38 @@ import { PasswordModule } from 'primeng/password';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
-import {ChartModule} from 'primeng/chart';
-import {PaginatorModule} from 'primeng/paginator';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {ToastModule} from 'primeng/toast';
+import { ChartModule } from 'primeng/chart';
+import { PaginatorModule } from 'primeng/paginator';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { DataViewModule } from 'primeng/dataview';
+import {CheckboxModule} from 'primeng/checkbox';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {SliderModule} from 'primeng/slider';
 
-import {MessageService} from 'primeng/api';
+
+import { MessageService } from 'primeng/api';
 import { FilterService } from 'primeng/api';
+import { ApiService } from './services/apiService/api.service';
+import { DevicesViewComponent } from './components/devices-view/devices-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    LoginComponent,
-    RegisterComponent,
-    NotFoundComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
+    NotFoundPageComponent,
     ProfileComponent,
-    ConfigurationComponent,
-    HistoryComponent,
-    DevicesComponent,
+    DevicesPageComponent,
+    DeviceConfigComponent,
+    ConfigurationPageComponent,
+    HistoryPageComponent,
+    DevicesViewComponent
   ],
   imports: [
+    DataViewModule,
     BrowserModule,
     AppRoutingModule,
     TableModule,
@@ -66,11 +77,14 @@ import { FilterService } from 'primeng/api';
     MessageModule,
     ToastModule,
     BrowserAnimationsModule,
+    CheckboxModule,
+    InputSwitchModule,
+    SliderModule
   ],
-  providers: [FilterService, MessageService],
+  providers: [FilterService, MessageService, ApiService],
   bootstrap: [AppComponent],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA,
   ]
 })
 export class AppModule { }

@@ -1,0 +1,20 @@
+{
+    "host": "smart-home-db",
+    "port": 28015,
+    "databaseName": "smart-home",
+    "tables": [
+      {
+        "name": "User",
+        "primaryKey": "Username"
+      },
+      {
+        "name": "Log",
+        "primaryKey": "Id"
+      },
+      {
+        "name": "IoTDevices",
+        "primaryKey": "Name"
+      }
+    ]
+  }
+  
