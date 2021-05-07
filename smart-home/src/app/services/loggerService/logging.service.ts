@@ -24,7 +24,7 @@ export class LoggingService {
     {
       console.error("Log could not be stored due to empty message. (see history-service/logError)");
     }
-    let log = new HistoryModel(-1, username, new Date(), "ERROR: " + message);
+    let log = new HistoryModel(username, new Date(), "ERROR: " + message);
 
     return this.client.post<HistoryModel>(this.backend + RestUrl.History, log).toPromise()
     .then(() => {
@@ -46,7 +46,7 @@ export class LoggingService {
     {
       console.debug("Log could not be stored due to empty message. (see history-service/logInfo)");
     }
-    let log = new HistoryModel(-1, username, new Date(), message);
+    let log = new HistoryModel(username, new Date(), message);
 
     return this.client.post<HistoryModel>(this.backend + RestUrl.History , log).toPromise()
     .then(() => {

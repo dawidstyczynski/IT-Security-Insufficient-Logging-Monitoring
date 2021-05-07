@@ -75,7 +75,6 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });
@@ -107,7 +106,6 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });
@@ -130,11 +128,11 @@ export class DatabaseService {
                               resolve(entries);
                         })
                         .catch((error) => {
+                              logger.error("server", "Could not get entries: " + error);
                               reject(error);
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });

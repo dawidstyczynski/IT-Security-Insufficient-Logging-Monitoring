@@ -6,18 +6,15 @@ import {HistoryModel} from '../models/history.model';
 const router = Router();
 const databaseService = new DatabaseService();
 
-
 router.post('/', (req: Request, res: Response) =>{
-      let {log} = req.body;
-      let historyEntry : HistoryModel = log;
-      databaseService.insert<HistoryModel>(historyEntry, DatabaseTable.Log)
+      let log : HistoryModel = req.body;
+      databaseService.insert<HistoryModel>(log, DatabaseTable.Log)
       .then(success =>{
             res.status(200).send(success);
       })
       .catch(error =>{
             res.status(500).send();
       })
-      
 })
 
 router.get('/', (req: Request, res: Response) =>{

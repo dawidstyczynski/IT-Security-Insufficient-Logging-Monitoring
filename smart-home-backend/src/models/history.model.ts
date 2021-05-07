@@ -1,14 +1,13 @@
 export class HistoryModel {
     
-    constructor(id: number, user: string, date: Date, message: string) {
-        this.Id = id;
+    constructor(user: string, date: Date, message: string) {
         this.User = user;
         this.Date = date;
         this.Message = message;
+        this.Id = undefined;
     }
 
-    public Id: number;
-
+    public Id: number | undefined;
     public User: string;
     public Date : Date
 

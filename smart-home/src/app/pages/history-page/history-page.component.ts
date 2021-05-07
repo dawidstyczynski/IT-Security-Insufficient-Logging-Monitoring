@@ -23,7 +23,15 @@ export class HistoryPageComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.GetData<HistoryModel[]>(RestUrl.History)
     .then(data =>{
-      this.logs = data;
+      this.logs = data.sort((x,y) => {
+        if (x.Date > y.Date)
+          return -1;
+
+        if (y.Date > x.Date)
+          return 1;
+
+        return 0;
+      });
     }).catch((e) =>{
       console.debug("coudl not get history.");
     });
