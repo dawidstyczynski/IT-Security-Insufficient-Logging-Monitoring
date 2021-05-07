@@ -9,8 +9,6 @@ import { devicesController } from './api/devices.controller';
 import { IoTDecice } from './models/iot-devices.model';
 import { loggingController } from './api/logging.controller';
 import { IoTDevicePurpose } from './models/iot-device-purpose.enum';
-import {LogLevel} from './models/logLevel.enum';
-import { LogModel } from './models/log.model';
 import { logger } from './services/logging.service';
 
 const server = express();

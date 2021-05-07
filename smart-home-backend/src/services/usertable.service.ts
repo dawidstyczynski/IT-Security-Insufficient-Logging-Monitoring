@@ -3,9 +3,6 @@ import * as databaseConfig from '../config/database-config.json';
 import {UserRecord} from '../models/userRecord';
 import {ChangePWRecord} from '../models/pwRecord';
 import { logger } from './logging.service';
-import { LogModel } from '../models/log.model';
-import { LogLevel } from '../models/logLevel.enum';
-
 
 export class UserTableService{
 
@@ -13,9 +10,6 @@ export class UserTableService{
     }
 
     public async RegisterUser(entry: UserRecord): Promise<UserRecord> {
-
-      logger.info("server", "New user registerd ⚠️");
-
           let conn = await this.connect();
 
           let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
@@ -33,6 +27,7 @@ export class UserTableService{
                 }
 
                 let user = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
+                logger.info("server", "New user registerd ⚠️");
 
                 return user[0];
           }
@@ -41,17 +36,32 @@ export class UserTableService{
     }
 
     public async LoginUser(entry: UserRecord): Promise<UserRecord> {
-            logger.info("server", "New login ⚠️");
-
           let conn = await this.connect();
-          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name, password: entry.password} ).run(conn);
+          let exists = await r.db(databaseConfig.databaseName).table<UserRecord>('User').filter( {name: entry.name} ).run(conn);
 
           if (exists.length === 0)
           {
+                logger.info(entry.name, "There is no existing user with that name.");
                 throw new Error('User not found.');
           }
 
-          return exists[0];
+          if (exists.length > 1)
+          {
+                logger.error(entry.name, "There are two users with the same name!");
+                throw new Error('Too many users with that name!');
+          }
+
+          if (exists.length === 1)
+          {
+                if (exists[0].password == entry.password)
+                {
+                  logger.info("server", "New login ⚠️");
+                  return exists[0];
+                }
+          }
+
+          logger.info(entry.name, "The password for login does not match!");
+          throw new Error("Wrong password.");
     }
 
     public async ChangePW(id : string, entry: ChangePWRecord): Promise<UserRecord>{

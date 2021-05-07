@@ -18,7 +18,8 @@ export class LoginPageComponent implements OnInit {
   public loginDisabled : boolean = false;
 
   constructor(private loginService: UserLoginService, private router: Router, private logger : LoggingService) { 
-    
+    this.userName = "";
+    this.password = "";
   }
 
   ngOnInit(): void {
@@ -27,13 +28,13 @@ export class LoginPageComponent implements OnInit {
   public async HandleUserLogin()
   {
     this.loginDisabled = true;
-    if (this.userName === '')
+    if (this.userName === "")
     {
       this.loginDisabled = false;
       return;
     }
       
-    if (this.password === '')
+    if (this.password === "")
     {
       this.loginDisabled = false;
       return;
@@ -41,11 +42,15 @@ export class LoginPageComponent implements OnInit {
       
     await this.loginService.Login( {name: this.userName, password: hash(this.password), email: '', admin: false} )
     .then((user) =>{
-      this.logger.logInfo(user.name, "Has logged in.");
+      this.logger.logInfo(this.userName, "has logged in.").then((e) =>{
+        console.debug(e);
+      }).catch((e) =>{
+        console.debug(e);
+      });
       this.router.navigateByUrl(this.router.createUrlTree([RouteName.Devices]));
     })
     .catch((error) =>{
-      console.log(error);
+      console.debug(error);
     })
     .finally(() =>{
       this.loginDisabled = false;

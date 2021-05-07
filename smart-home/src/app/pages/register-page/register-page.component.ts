@@ -3,6 +3,7 @@ import { UserLoginService } from 'src/app/services/login-service/user-login.serv
 import * as hash from 'object-hash';
 
 import { Router } from '@angular/router';
+import { LoggingService } from 'src/app/services/loggerService/logging.service';
 
 @Component({
   templateUrl: './register-page.component.html',
@@ -17,7 +18,7 @@ export class RegisterPageComponent implements OnInit {
 
   public signUpDisabled : boolean = false;
 
-  constructor(private registerService: UserLoginService, private router: Router) {
+  constructor(private registerService: UserLoginService, private logger: LoggingService, private router: Router) {
     
    }
 
@@ -29,11 +30,13 @@ export class RegisterPageComponent implements OnInit {
     this.signUpDisabled = true;
     this.registerService.Register({name: this.userName, password: hash(this.password), email: '', admin: this.admin} )
     .then((user) =>{
-      console.log('User is now registered.');
+
+      this.admin ? this.logger.logInfo(this.userName, 'is a new admin.') : this.logger.logInfo(this.userName, 'is a new user.');
+
       this.router.navigateByUrl(this.router.createUrlTree(['login']));
     })
     .catch((error) =>{
-      console.log(error);
+      console.debug(error);
     })
     .finally(() =>{
       this.signUpDisabled = false;

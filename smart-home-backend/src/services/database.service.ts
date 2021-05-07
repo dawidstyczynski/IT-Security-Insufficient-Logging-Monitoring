@@ -46,7 +46,7 @@ export class DatabaseService {
                         resolve(connection);
                   })
                   .catch((error) => {
-                        logger.error("server", "connection to database failed")
+                        logger.error("server", 'Database connection failed' + error);
                         reject();
                   });
             });
@@ -70,11 +70,12 @@ export class DatabaseService {
                               resolve(true);
                         })
                         .catch((error) => {
+                              logger.error("server", "Entity not inserted" + error);
                               reject(false);
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", "Entity not inserted")
+                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });
@@ -101,12 +102,12 @@ export class DatabaseService {
                               resolve(true);
                         })
                         .catch((error) => {
-                              console.log(error);
+                              logger.error("server", "Entity not updated: " + error);
                               reject(false);
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", "Entity not updated")
+                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });
@@ -133,12 +134,13 @@ export class DatabaseService {
                         });
                   })
                   .catch((error) => {
+                        logger.error("server", 'Database connection failed' + error);
                         reject(false);
                   });
             });
       }
 
-      public getSomeEntries<T>(filter: any, table: DatabaseTable): Promise<T[]> {
+      public getFilteredEntries<T>(filter: any, table: DatabaseTable): Promise<T[]> {
             return new Promise<T[]>((resolve, reject) => {
                   this.connect()
                   .then((connection: Connection) => {
@@ -150,11 +152,11 @@ export class DatabaseService {
                               resolve(entries);
                         })
                         .catch((error) => {
+                              logger.error("server", 'Could not get filtered entries' + error);
                               reject(error);
                         });
                   })
                   .catch((error) => {
-                        logger.error("server", 'Database connection failed')
                         reject(false);
                   });
             });

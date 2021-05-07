@@ -15,7 +15,7 @@ export class HistoryPageComponent implements OnInit {
   public rows: number;
   public first: number;
 
-  constructor(private logger : LoggingService, private apiService : ApiService) { 
+  constructor(private apiService : ApiService) { 
     this.rows = 25;
     this.first = 0;
   }
@@ -24,6 +24,8 @@ export class HistoryPageComponent implements OnInit {
     this.apiService.GetData<HistoryModel[]>(RestUrl.History)
     .then(data =>{
       this.logs = data;
+    }).catch((e) =>{
+      console.debug("coudl not get history.");
     });
   }
 }

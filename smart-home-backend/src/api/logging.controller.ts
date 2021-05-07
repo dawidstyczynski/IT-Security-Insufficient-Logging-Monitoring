@@ -8,8 +8,9 @@ const databaseService = new DatabaseService();
 
 
 router.post('/', (req: Request, res: Response) =>{
-      let log : HistoryModel = req.body;
-      databaseService.insert<HistoryModel>(log, DatabaseTable.Log)
+      let {log} = req.body;
+      let historyEntry : HistoryModel = log;
+      databaseService.insert<HistoryModel>(historyEntry, DatabaseTable.Log)
       .then(success =>{
             res.status(200).send(success);
       })
@@ -20,13 +21,11 @@ router.post('/', (req: Request, res: Response) =>{
 })
 
 router.get('/', (req: Request, res: Response) =>{
-      let filter : any = req.body;
-      databaseService.getSomeEntries<HistoryModel>(filter, DatabaseTable.Log)
+      databaseService.getAllEntries<HistoryModel>(DatabaseTable.Log)
       .then(logs => {
             res.status(200).send(logs);
       })
       .catch(error =>{
-            console.log(error);
             res.status(500).send();
       });
 });

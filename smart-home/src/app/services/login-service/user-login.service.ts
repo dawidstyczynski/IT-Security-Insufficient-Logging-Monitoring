@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { host, port } from '../../constants/backend-config';
 import {UserRecord} from '../../models/userRecord';
+import { LoggingService } from '../loggerService/logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class UserLoginService {
 
   private userData: UserRecord | null;
 
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private logger: LoggingService) {
       this.userData = null;
    }
 
@@ -18,7 +19,6 @@ export class UserLoginService {
     return this.client.post<UserRecord>(host + port + '/login', user).toPromise()
     .then((user) =>{
       this.userData = user;
-      console.log(this.userData);
       return user;
     })
     .catch((error) =>{
@@ -27,7 +27,10 @@ export class UserLoginService {
   }
 
   public async Register(user: UserRecord) : Promise<UserRecord>{
-    return await this.client.post<UserRecord>(host + port + '/register', user).toPromise();
+    return this.client.post<UserRecord>(host + port + '/register', user).toPromise<UserRecord>()
+    .then<UserRecord, UserRecord>((e) =>{
+      return e;
+    });
   }
 
   public async ChangePassword(changePW: string) : Promise<UserRecord>{

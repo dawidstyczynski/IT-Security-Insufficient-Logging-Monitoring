@@ -8,7 +8,7 @@ class Logger {
       private logger: log4js.Logger
 
       constructor(name: string, level: string) {
-            this.logger = getLogger('name');
+            this.logger = getLogger(name);
             this.logger.level = level;
       }
 
@@ -59,7 +59,7 @@ class Logger {
             });
       
             req.on('error', e =>{
-                  console.log(e);
+                  this.logger.error(e);
             })
       
             req.write(data);

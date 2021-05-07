@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MenuItem} from 'primeng/api';
 import { RouteName } from 'src/app/constants/route-name.enum';
+import { LoggingService } from 'src/app/services/loggerService/logging.service';
 import {UserLoginService} from '../../services/login-service/user-login.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class MenuComponent implements OnInit {
   public title = 'Insufficient logging and monitoring';
   public items : MenuItem[];
 
-  constructor(private loginService: UserLoginService, private router: Router) { }
+  constructor(private loginService: UserLoginService, private router: Router, private logger : LoggingService) { }
 
   ngOnInit(): void {
     this.items = [
@@ -25,6 +26,7 @@ export class MenuComponent implements OnInit {
   }
 
   public HandleUserLogout(){
+    this.logger.logInfo(this.loginService.getUserData().name, "has logged out.");
     this.loginService.Logout();
     this.router.navigateByUrl(this.router.createUrlTree([RouteName.Login]));
   }

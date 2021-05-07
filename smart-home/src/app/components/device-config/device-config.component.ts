@@ -3,6 +3,8 @@ import { DevicesService } from '../../services/devicesService/devices.service';
 import { IoTDevice } from '../../models/iot-devices.model';
 import { ApiService } from 'src/app/services/apiService/api.service';
 import { RestUrl } from 'src/app/constants/rest-urls.enum';
+import { LoggingService } from 'src/app/services/loggerService/logging.service';
+import { UserLoginService } from 'src/app/services/login-service/user-login.service';
 
 @Component({
   selector: 'app-device-config',
@@ -11,14 +13,22 @@ import { RestUrl } from 'src/app/constants/rest-urls.enum';
 })
 export class DeviceConfigComponent implements OnInit {
 
-  constructor(private deviceService: DevicesService, private apiService: ApiService) {
+  constructor(
+    private deviceService: DevicesService, 
+    private apiService: ApiService, 
+    private logger: LoggingService,
+    private login: UserLoginService) 
+    {
     this.labelEdit = null;
+    this.currentLabelName = "";
     this.rows = 25;
    }
 
   public devices: IoTDevice[];
   public labelEdit: IoTDevice | null;
   public rows : number;
+
+  private currentLabelName: string;
 
   ngOnInit(): void {
     this.GetDevices();
@@ -28,16 +38,17 @@ export class DeviceConfigComponent implements OnInit {
     this.deviceService.getDevices().then((array) => {
       this.devices = array;
     }).catch((error) =>{
-      console.log(error);
     })
   }
 
   public HandleLabelEdit(device: IoTDevice){
     this.labelEdit = device;
+    this.currentLabelName = device.Name;
   }
 
   public HandleLabelCancel(){
     this.labelEdit = null;
+    this.currentLabelName = "";
   }
 
   public HandleLabelSave(){
@@ -46,15 +57,24 @@ export class DeviceConfigComponent implements OnInit {
       return;
     }
 
-    if (this.labelEdit.Name.indexOf(' ') <= 0)
+    if (this.labelEdit.Name.replace(' ', '').length === 0)
     {
-      this.apiService.PatchData<IoTDevice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit).then((success) => {
-        if (!success)
-        {
-          console.log("Could not update device label.");
-        }});
+      console.debug("Device label is not allowed to be empty.");
+        return;
     }
 
-    console.log("Label for device already taken.");
+    this.apiService.PatchData<IoTDevice, Boolean>(RestUrl.Devices, {id : this.labelEdit.Id}, this.labelEdit)
+      .then((success) => {
+        if (!success)
+        {
+          console.debug("Could not update device label.");
+          return;
+        }
+
+        this.logger.logInfo(this.login.getUserData.name, "has changed the label of " + this.currentLabelName + " to " + this.labelEdit.Name);
+        
+      }).catch((e) =>{
+        console.debug("Label for device already taken.");
+      });
   }
 }
